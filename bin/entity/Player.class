@@ -1,0 +1,128 @@
+// Source code is decompiled from a .class file using FernFlower decompiler (from Intellij IDEA).
+package entity;
+
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import main.KeyHandler;
+import main.Panel;
+
+public class Player extends Entity {
+   Panel p;
+   KeyHandler keyH;
+
+   public Player(Panel p, KeyHandler keyH) {
+      this.p = p;
+      this.keyH = keyH;
+      this.setDefaultValues();
+      this.getPlayerImage();
+   }
+
+   public void setDefaultValues() {
+      this.x = 100;
+      this.y = 100;
+      this.speed = 4;
+      this.direction = "down";
+   }
+
+   public void getPlayerImage() {
+      try {
+         this.up1 = ImageIO.read(this.getClass().getResourceAsStream("/player/playerBack1.png"));
+         this.up2 = ImageIO.read(this.getClass().getResourceAsStream("/player/playerBack2.png"));
+         this.down1 = ImageIO.read(this.getClass().getResourceAsStream("/player/playerFront1.png"));
+         this.down2 = ImageIO.read(this.getClass().getResourceAsStream("/player/playerFront2.png"));
+         this.left1 = ImageIO.read(this.getClass().getResourceAsStream("/player/playerLeft1.png"));
+         this.left2 = ImageIO.read(this.getClass().getResourceAsStream("/player/playerLeft2.png"));
+         this.right1 = ImageIO.read(this.getClass().getResourceAsStream("/player/playerRight1.png"));
+         this.right2 = ImageIO.read(this.getClass().getResourceAsStream("/player/playerRight2.png"));
+      } catch (IOException var2) {
+         var2.printStackTrace();
+      }
+
+   }
+
+   public void update() {
+      if (this.keyH.upPressed || this.keyH.downPressed || this.keyH.leftPressed || this.keyH.rightPressed) {
+         if (this.keyH.upPressed) {
+            this.direction = "up";
+            this.y -= this.speed;
+         }
+
+         if (this.keyH.downPressed) {
+            this.direction = "down";
+            this.y += this.speed;
+         }
+
+         if (this.keyH.leftPressed) {
+            this.direction = "left";
+            this.x -= this.speed;
+         }
+
+         if (this.keyH.rightPressed) {
+            this.direction = "right";
+            this.x += this.speed;
+         }
+
+         ++this.spriteCounter;
+         if (this.spriteCounter > 10) {
+            if (this.spriteNum == 1) {
+               this.spriteNum = 2;
+            } else if (this.spriteNum == 2) {
+               this.spriteNum = 1;
+            }
+
+            this.spriteCounter = 0;
+         }
+      }
+
+   }
+
+   public void draw(Graphics2D g2) {
+      BufferedImage image = null;
+      switch (this.direction) {
+         case "up":
+            if (this.spriteNum == 1) {
+               image = this.up1;
+            }
+
+            if (this.spriteNum == 2) {
+               image = this.up2;
+            }
+            break;
+         case "down":
+            if (this.spriteNum == 1) {
+               image = this.down1;
+            }
+
+            if (this.spriteNum == 2) {
+               image = this.down2;
+            }
+            break;
+         case "left":
+            if (this.spriteNum == 1) {
+               image = this.left1;
+            }
+
+            if (this.spriteNum == 2) {
+               image = this.left2;
+            }
+            break;
+         case "right":
+            if (this.spriteNum == 1) {
+               image = this.right1;
+            }
+
+            if (this.spriteNum == 2) {
+               image = this.right2;
+            }
+      }
+
+      int var10002 = this.x;
+      int var10003 = this.y;
+      this.p.getClass();
+      this.p.getClass();
+      g2.drawImage(image, var10002, var10003, 48, 48, (ImageObserver)null);
+   }
+}
