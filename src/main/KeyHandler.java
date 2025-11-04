@@ -1,0 +1,56 @@
+package main;
+
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+//to handle keyboard input
+public class KeyHandler implements KeyListener {
+	
+	public boolean upPressed, downPressed, leftPressed, rightPressed;
+	
+	@Override
+	public void keyTyped(KeyEvent e) {
+		
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		
+		int code = e.getKeyCode();
+		
+		if(code == KeyEvent.VK_W) { 
+			upPressed = true; //W key is pressed(up)
+		}
+		if (code == KeyEvent.VK_S) {
+			downPressed = true; // S key is pressed(down)
+		}
+		if (code == KeyEvent.VK_A) {
+			leftPressed = true; // A key is pressed(left)
+		}
+		if (code == KeyEvent.VK_D) {
+			rightPressed = true; // D key is pressed(right)
+		}
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		
+		int code =  e.getKeyCode();
+		
+		if(code == KeyEvent.VK_W) { 
+			upPressed = false; //W key is released
+		}
+		if (code == KeyEvent.VK_S) {
+			downPressed = false; // S key is released
+		}
+		if (code == KeyEvent.VK_A) {
+			leftPressed = false; // A key is released
+		}
+		if (code == KeyEvent.VK_D) {
+			rightPressed = false; // D key is released
+		}
+		
+	}
+}
