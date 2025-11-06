@@ -1,8 +1,6 @@
 @echo off
 echo Compiling...
-dir /s /b src\*.java > sources.txt
-javac -d bin @sources.txt
-del sources.txt
+javac -sourcepath src -d bin src/main/*.java src/entity/*.java src/module-info.java
 echo.
 echo Running...
-java --module-path bin -m Teamproj/main.Main
+java -cp bin main.Main
