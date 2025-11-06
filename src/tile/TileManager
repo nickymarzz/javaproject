@@ -1,0 +1,25 @@
+package tile;
+
+import main.Panel;
+
+public class TileManager{
+
+    Panel gp;
+    Tile[] tile;
+
+    public TileManager(GamePanel gp){
+        this.gp = gp;
+
+        tile = new Tile[10]; // 10 tile types
+
+}
+
+public void getTileImage(){
+
+    try {
+
+    }
+    catch(IOException e){
+        e.printStackTrace();
+    }
+}
