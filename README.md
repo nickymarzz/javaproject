@@ -8,6 +8,10 @@ To compile the Java source files, navigate to the project's root directory in yo
 javac -sourcepath src -d bin src/main/*.java src/entity/*.java src/module-info.java
 ```
 
+## Copy resources
+```bash
+xcopy res bin /E /I /Y 
+```
 ## How to Run
 
 After compiling, you can run the application from the project's root directory using the following command:
