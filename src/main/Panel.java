@@ -3,6 +3,7 @@ package main;
 import javax.swing.JPanel;
 import entity.Player;
 import tile.TileManager;
+
 import java.awt.*;
 
 //implments Runnable->allows panel to be run by a Thread)
@@ -19,15 +20,22 @@ public class Panel extends JPanel implements Runnable {
 	public final int maxScreenRow = 12;
 	
 	// we have to scale the screen size
-	final int screenWidth = tileSize * maxScreenCol;
-	final int screenHeight = tileSize * maxScreenRow;
+	public final int screenWidth = tileSize * maxScreenCol;
+	public final int screenHeight = tileSize * maxScreenRow;
+	
+	
+	//World map size
+	public final int maxWorldCol = 50;
+	public final int maxWorldRow = 50;
+	public final int worldWidth = tileSize * maxWorldCol;
+	public final int worldHeight = tileSize * maxWorldRow;
 	
 	int fps = 60; //frames per second
 	
 	TileManager tileM = new TileManager(this); //tile manager instance
 	KeyHandler keyH = new KeyHandler(); //key handler instance
 	Thread gameThread; //keeps the game running like a clock 
-	Player player = new Player(this, keyH); //player instance
+	public Player player = new Player(this, keyH); //player instance
 	
 	
 	// panel constructor
@@ -75,6 +83,7 @@ public class Panel extends JPanel implements Runnable {
 		}
 		
 	}
+	
 	public void update() {
 		player.update();
 		
@@ -86,7 +95,7 @@ public class Panel extends JPanel implements Runnable {
 		//Graphics2D extends Graphics class-> more control over graphics
 		Graphics2D g2 = (Graphics2D) g;
 		
-		tileM.draw(g2); //draw tiles
+		tileM.draw(g2); //draw tiles first (background)
 		player.draw(g2); //draw player 
 		
 		

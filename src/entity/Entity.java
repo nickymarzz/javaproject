@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 
 public class Entity { // Base class for all entities(Player, NPC etc) in the game
 	
-	public int x,y;
+	public int worldX,worldY;
 	public int speed;
 	
 	
