@@ -35,6 +35,7 @@ public class Panel extends JPanel implements Runnable {
 	TileManager tileM = new TileManager(this); //tile manager instance
 	KeyHandler keyH = new KeyHandler(); //key handler instance
 	Thread gameThread; //keeps the game running like a clock 
+	public CollisionChecker cChecker = new CollisionChecker(this); //collision checker instance
 	public Player player = new Player(this, keyH); //player instance
 	
 	

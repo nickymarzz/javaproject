@@ -1,5 +1,6 @@
 package entity;
 
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 public class Entity { // Base class for all entities(Player, NPC etc) in the game
@@ -16,5 +17,8 @@ public class Entity { // Base class for all entities(Player, NPC etc) in the gam
 	public int spriteCounter = 0;
 	public int spriteNum = 1; //which sprite to display
 	
+	// hit box
+	public Rectangle solidArea;
+	public boolean collisionOn = false;
 
 }
