@@ -2,6 +2,7 @@ package main;
 
 import javax.swing.JPanel;
 import entity.Player;
+import object.ParentObject;
 import tile.TileManager;
 
 import java.awt.*;
@@ -36,7 +37,9 @@ public class Panel extends JPanel implements Runnable {
 	KeyHandler keyH = new KeyHandler(); //key handler instance
 	Thread gameThread; //keeps the game running like a clock 
 	public CollisionChecker cChecker = new CollisionChecker(this); //collision checker instance
+	public AssetSetter aSetter = new AssetSetter(this); //asset setter instance
 	public Player player = new Player(this, keyH); //player instance
+	public ParentObject obj[] = new ParentObject[10]; //array of objects in the game
 	
 	
 	// panel constructor
@@ -51,6 +54,13 @@ public class Panel extends JPanel implements Runnable {
 		this.setFocusable(true); //panel can receive focus to get key input
 	}
 
+
+	// setup game objects (items, etc)
+	public void setupGame() {
+		aSetter.setObject(); //place objects in the game world
+	}
+
+	
 	// start the game thread
 	public void startGameThread() {
 		gameThread = new Thread(this); //"this" refers to Panel class that implements Runnable
@@ -96,8 +106,17 @@ public class Panel extends JPanel implements Runnable {
 		//Graphics2D extends Graphics class-> more control over graphics
 		Graphics2D g2 = (Graphics2D) g;
 		
+		//tile
 		tileM.draw(g2); //draw tiles first (background)
-		player.draw(g2); //draw player 
+
+		//objects
+		for (int i =0; i<obj.length; i++) {//loop through all objects
+			if (obj[i] != null) { //draw only if object exists
+				obj[i].draw(g2, this); //draw objects (middle layer)
+			}
+		}
+		//player
+		player.draw(g2); //draw player (top most)
 		
 		
 		g2.dispose(); //free() but for like window,graphics,etc not memory 
