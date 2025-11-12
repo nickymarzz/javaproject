@@ -1,6 +1,8 @@
 package object;
 
 import java.awt.image.BufferedImage;
+import java.awt.Rectangle;
+
 import main.Panel;
 
 
@@ -10,6 +12,13 @@ public class ParentObject {
     public String name;
     public boolean collision = false;
     public int worldX, worldY;
+
+    // hit box of object
+    public Rectangle solidArea = new Rectangle(0,0,48,48);
+
+    // default solid area position
+    public int solidAreaDefaultX = 0;
+    public int solidAreaDefaultY = 0;
 
     public void draw(java.awt.Graphics2D g2, Panel gp) {
        int screenX = worldX - gp.player.worldX + gp.player.screenX; 

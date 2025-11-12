@@ -9,5 +9,6 @@ public class CheatSheet extends ParentObject {
         } catch (java.io.IOException e) {
             e.printStackTrace();
          }
+        collision = true;
     }
 }

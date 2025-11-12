@@ -8,6 +8,7 @@ public class Pencil extends ParentObject {
         } catch (java.io.IOException e) {
             e.printStackTrace();
          }
+        collision = true;
     }
     
 }

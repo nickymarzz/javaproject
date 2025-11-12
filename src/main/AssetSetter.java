@@ -21,7 +21,7 @@ public class AssetSetter {
         gp.obj[1].worldY = gp.tileSize * 22;
 
         gp.obj[2] = new Pencil();
-        gp.obj[2].worldX = gp.tileSize * 40;
+        gp.obj[2].worldX = gp.tileSize * 45;
         gp.obj[2].worldY = gp.tileSize * 40;
     }
 }

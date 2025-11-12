@@ -1,5 +1,6 @@
 package object;
 
+
 public class Coffee extends ParentObject {
 
     public Coffee() {
@@ -9,7 +10,6 @@ public class Coffee extends ParentObject {
         } catch (java.io.IOException e) {
             e.printStackTrace();
          }
+        collision = true;
     }
-     
-     
 }

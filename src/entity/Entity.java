@@ -20,5 +20,8 @@ public class Entity { // Base class for all entities(Player, NPC etc) in the gam
 	// hit box
 	public Rectangle solidArea;
 	public boolean collisionOn = false;
+	
+	// default solid area position
+	public int solidAreaDefaultX, solidAreaDefaultY;
 
 }
