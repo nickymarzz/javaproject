@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.awt.Rectangle;
 
+
 import javax.imageio.ImageIO;
 
 import main.KeyHandler;
@@ -18,6 +19,11 @@ public class Player extends Entity {
 	
 	public final int screenX; //player's position on screen (fixed)
 	public final int screenY;
+
+	// amt of items player has
+	int hasCoffee = 0;
+	int hasCheatSheet = 0;
+	int hasPencil = 0;
 	
 	public Player(Panel gp, KeyHandler keyH) {
 		this.gp = gp;
@@ -26,14 +32,24 @@ public class Player extends Entity {
 		screenX = gp.screenWidth / 2 - (gp.tileSize / 2); //center of screen
 		screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
 
-		solidArea = new Rectangle(8,16,32,32); // hit box size and position
+		// hit box setup within player sprite
+		solidArea = new Rectangle();
+		solidArea.x = 8;
+		solidArea.y = 16;
+		solidArea.width = 32;
+		solidArea.height = 32;
+
+		//prevents hit box drifting when player moves
+		//by storing default x and y positions of hit box
+		solidAreaDefaultX = solidArea.x;
+		solidAreaDefaultY = solidArea.y;
 		
 		setDefaultValues();
 		getPlayerImage();
 	}
 	public void setDefaultValues() {
-		worldX = gp.tileSize * 23; // starting position in the world
-		worldY = gp.tileSize * 21;
+		worldX = gp.tileSize * 40; // starting position in the world
+		worldY = gp.tileSize * 40;
 		speed = 4;
 		direction = "down"; // default direction
 		
@@ -88,6 +104,10 @@ public class Player extends Entity {
 			collisionOn = false; //reset collision flag before checking
 			gp.cChecker.checkTile(this); //check tile collision
 
+			int objIndex = gp.cChecker.checkObject(this, true); //check object collision
+			pickUpObject(objIndex);
+
+
 			// if collision is false, player can move
 			if (collisionOn == false) {
 				switch(direction) { 
@@ -122,6 +142,36 @@ public class Player extends Entity {
 		
 		
 	}
+
+	public void pickUpObject(int i){
+
+		if (i != 999){ //999 cuz max is 10 in object array(for now)
+			
+		String objectName = gp.obj[i].name;
+
+		switch(objectName) {
+		case "Coffee":
+			hasCoffee++;
+			gp.obj[i] = null; //remove coffee from game world
+			break;
+
+		case "Cheat Sheet":
+			hasCheatSheet++;
+			gp.obj[i] = null; //remove cheat sheet from game world
+			break;
+
+		case "Pencil":
+			hasPencil++;
+			gp.obj[i] = null; //remove pencil from game world
+			break;
+
+
+			}
+		}
+
+	}
+
+
 	public void draw(Graphics2D g2) {
 			
 			BufferedImage image = null; //initially no image
