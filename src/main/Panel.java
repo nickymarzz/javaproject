@@ -5,6 +5,7 @@ import entity.Player;
 import object.ParentObject;
 import tile.TileManager;
 
+
 import java.awt.*;
 
 //implments Runnable->allows panel to be run by a Thread)
@@ -33,15 +34,26 @@ public class Panel extends JPanel implements Runnable {
 	
 	int fps = 60; //frames per second
 	
+	//SYSTEM
 	TileManager tileM = new TileManager(this); //tile manager instance
-	KeyHandler keyH = new KeyHandler(); //key handler instance
+	KeyHandler keyH = new KeyHandler(this); //key handler instance
 	Thread gameThread; //keeps the game running like a clock 
 	public CollisionChecker cChecker = new CollisionChecker(this); //collision checker instance
 	public AssetSetter aSetter = new AssetSetter(this); //asset setter instance
+	public UI ui = new UI(this); //user interface instance
+
+
+
+	//ENTITY AND OBJECT
 	public Player player = new Player(this, keyH); //player instance
 	public ParentObject obj[] = new ParentObject[10]; //array of objects in the game
 	
-	
+	//GAME STATE
+	public int gameState;
+	public final int playState = 1;
+	public final int pauseState = 2;
+
+
 	// panel constructor
 	public Panel() {
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -58,6 +70,9 @@ public class Panel extends JPanel implements Runnable {
 	// setup game objects (items, etc)
 	public void setupGame() {
 		aSetter.setObject(); //place objects in the game world
+
+		gameState = playState; //start game in play state
+
 	}
 
 	
@@ -96,13 +111,19 @@ public class Panel extends JPanel implements Runnable {
 	}
 	
 	public void update() {
-		player.update();
+		if (gameState == playState) {
+			//player
+			player.update();
+		}
+		if (gameState == pauseState) {
+			//nothing for now
+		}
+
 		
 	}
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g); //calls the parent of JPanel class
 		
-	
 		//Graphics2D extends Graphics class-> more control over graphics
 		Graphics2D g2 = (Graphics2D) g;
 		
@@ -117,7 +138,9 @@ public class Panel extends JPanel implements Runnable {
 		}
 		//player
 		player.draw(g2); //draw player (top most)
-		
+
+		//UI
+		ui.draw(g2); //draw user interface (top most)
 		
 		g2.dispose(); //free() but for like window,graphics,etc not memory 
 	}
