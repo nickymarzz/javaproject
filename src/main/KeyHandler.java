@@ -8,7 +8,8 @@ public class KeyHandler implements KeyListener {
 	
 	Panel gp;
 	public boolean upPressed, downPressed, leftPressed, rightPressed;
-	
+
+
 	//constructor
 	public KeyHandler(Panel gp) {
 		this.gp = gp;
@@ -37,6 +38,13 @@ public class KeyHandler implements KeyListener {
 		}
 		if (code == KeyEvent.VK_D) {
 			rightPressed = true; // D key is pressed(right)
+		}
+		if (code == KeyEvent.VK_P) {
+			if (gp.gameState == gp.playState) {
+				gp.gameState = gp.pauseState; //change to pause state
+			} else if (gp.gameState == gp.pauseState) {
+				gp.gameState = gp.playState; //change to play state
+			}
 		}
 		
 	}
