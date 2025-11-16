@@ -42,7 +42,7 @@ public class TileManager {
 			
 			//asphalt tile
 			tile[3] = new Tile();
-			tile[3].image = javax.imageio.ImageIO.read(getClass().getResourceAsStream("/tiles/Asphalt .png"));
+			tile[3].image = javax.imageio.ImageIO.read(getClass().getResourceAsStream("/tiles/asphalt.png"));
 			
 			//tree tile
 			tile[4] = new Tile();
