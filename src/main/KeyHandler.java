@@ -6,8 +6,15 @@ import java.awt.event.KeyListener;
 //to handle keyboard input
 public class KeyHandler implements KeyListener {
 	
+	Panel gp;
 	public boolean upPressed, downPressed, leftPressed, rightPressed;
 	
+	//constructor
+	public KeyHandler(Panel gp) {
+		this.gp = gp;
+		
+	}
+
 	@Override
 	public void keyTyped(KeyEvent e) {
 		

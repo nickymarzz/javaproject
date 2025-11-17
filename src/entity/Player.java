@@ -21,9 +21,9 @@ public class Player extends Entity {
 	public final int screenY;
 
 	// amt of items player has
-	int hasCoffee = 0;
-	int hasCheatSheet = 0;
-	int hasPencil = 0;
+	public int hasCoffee = 0;
+	public int hasCheatSheet = 0;
+	public int hasPencil = 0;
 	
 	public Player(Panel gp, KeyHandler keyH) {
 		this.gp = gp;
@@ -153,16 +153,23 @@ public class Player extends Entity {
 		case "Coffee":
 			hasCoffee++;
 			gp.obj[i] = null; //remove coffee from game world
+			gp.ui.showMessage("Coffee obtained!");
 			break;
 
 		case "Cheat Sheet":
 			hasCheatSheet++;
 			gp.obj[i] = null; //remove cheat sheet from game world
+			gp.ui.showMessage("Cheat Sheet obtained!");
+//---------------------------------------------------------------------------
+			//JUST FOR TESTING PURPOSES (delete later)
+			gp.ui.gameFinished = true; //trigger game finish
+//---------------------------------------------------------------------------
 			break;
 
 		case "Pencil":
 			hasPencil++;
 			gp.obj[i] = null; //remove pencil from game world
+			gp.ui.showMessage("Pencil obtained!");
 			break;
 
 
