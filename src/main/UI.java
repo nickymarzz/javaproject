@@ -16,6 +16,7 @@ public class UI {
     BufferedImage coffeeImage;
     BufferedImage cheatSheetImage;
     BufferedImage pencilImage;
+    Graphics2D g2;
     public boolean messageOn = false;
     public String message = "";
     int messageCounter = 0;
@@ -29,7 +30,7 @@ public class UI {
         arial_40 = new Font("Arial", Font.PLAIN, 40);
         arial_80B = new Font("Arial", Font.BOLD, 80);
 
-        //load coffee image
+        //load item images
         Coffee coffee = new Coffee();
         coffeeImage = coffee.image;
 
@@ -48,6 +49,19 @@ public class UI {
 
     //draws the user interface
     public void draw(Graphics2D g2) {
+
+        this.g2 = g2;
+
+        g2.setFont(arial_40);
+        g2.setColor(Color.white);
+
+        if (gp.gameState == gp.playState) {
+          //nothing to draw in play state
+        }
+        //PAUSE SCREEN
+        if (gp.gameState == gp.pauseState) {
+            drawPauseScreen();
+        }
 
         //GAME FINISH SCREEN
         if (gameFinished == true) {
@@ -110,9 +124,20 @@ public class UI {
        
         }
         }
-        
-
-
     }
-    
+    //DRAW PAUSE SCREEN
+    public void drawPauseScreen() {
+        
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 80F));
+        String text = "PAUSED";
+        int x = getXforCenteredText(text);
+        int y = gp.screenHeight/2;;
+        g2.drawString(text, x, y);
+    }
+    //get x coordinate to center text on screen
+    public int getXforCenteredText(String text) {
+        int length = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+        int x = gp.screenWidth/2 - length/2;
+        return x;
+    }
 }

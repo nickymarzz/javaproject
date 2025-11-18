@@ -112,7 +112,7 @@ public class Panel extends JPanel implements Runnable {
 	
 	public void update() {
 		if (gameState == playState) {
-			//player
+			//update player
 			player.update();
 		}
 		if (gameState == pauseState) {
