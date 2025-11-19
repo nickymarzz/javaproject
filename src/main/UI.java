@@ -31,13 +31,13 @@ public class UI {
         arial_80B = new Font("Arial", Font.BOLD, 80);
 
         //load item images
-        Coffee coffee = new Coffee();
+        Coffee coffee = new Coffee(gp);
         coffeeImage = coffee.image;
 
-        CheatSheet cheatSheet = new CheatSheet();
+        CheatSheet cheatSheet = new CheatSheet(gp);
         cheatSheetImage = cheatSheet.image;
 
-        Pencil pencil = new Pencil();
+        Pencil pencil = new Pencil(gp);
         pencilImage = pencil.image;
     }
 

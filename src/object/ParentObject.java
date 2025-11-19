@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.awt.Rectangle;
 
 import main.Panel;
+import main.UtilityTool;
 
 
 public class ParentObject {
@@ -12,6 +13,7 @@ public class ParentObject {
     public String name;
     public boolean collision = false;
     public int worldX, worldY;
+    UtilityTool uTool = new UtilityTool();
 
     // hit box of object
     public Rectangle solidArea = new Rectangle(0,0,48,48);
