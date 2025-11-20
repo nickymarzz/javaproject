@@ -76,7 +76,8 @@ public class Player extends Entity {
 		
 		// check if any movement key is pressed (stops character from running in place)
 		if (keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true || keyH.rightPressed == true) {
-			
+
+
 			// player movement
 			if(keyH.upPressed == true) {
 				direction = "up";
@@ -96,13 +97,17 @@ public class Player extends Entity {
 			}
 			
 
-		
+			//CHECK TILE COLLISION (tree, wall )
 			collisionOn = false; //reset collision flag before checking
 			gp.cChecker.checkTile(this); //check tile collision
 
+			//CHECK OBJ COLLISION 
 			int objIndex = gp.cChecker.checkObject(this, true); //check object collision
 			pickUpObject(objIndex);
 
+			//CHECK NPC COLLISION
+			int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
+			interactNPC(npcIndex);
 
 			// if collision is false, player can move
 			if (collisionOn == false) {
@@ -171,10 +176,14 @@ public class Player extends Entity {
 
 			}
 		}
-
 	}
 
-
+	//TEST
+	public void interactNPC(int i){
+		if (i != 999){
+ 		
+		}
+	}
 	public void draw(Graphics2D g2) {
 			
 			BufferedImage image = null; //initially no image

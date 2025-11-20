@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 
 import main.Panel;
 import main.UtilityTool;
+import java.awt.Graphics2D;
 
 
 public class ParentObject {
@@ -22,7 +23,7 @@ public class ParentObject {
     public int solidAreaDefaultX = 0;
     public int solidAreaDefaultY = 0;
 
-    public void draw(java.awt.Graphics2D g2, Panel gp) {
+    public void draw(Graphics2D g2, Panel gp) {
        int screenX = worldX - gp.player.worldX + gp.player.screenX; 
 		int screenY = worldY - gp.player.worldY + gp.player.screenY;
 		

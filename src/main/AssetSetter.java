@@ -3,6 +3,7 @@ package main;
 import object.CheatSheet;
 import object.Coffee;
 import object.Pencil;
+import entity.NPC_Prof;
 
 public class AssetSetter {
 
@@ -21,7 +22,13 @@ public class AssetSetter {
         gp.obj[1].worldY = gp.tileSize * 22;
 
         gp.obj[2] = new Pencil(gp);
-        gp.obj[2].worldX = gp.tileSize * 45;
+        gp.obj[2].worldX = gp.tileSize * 40;
         gp.obj[2].worldY = gp.tileSize * 40;
     }
+
+    public void setNPC() {
+        gp.npc[0] = new NPC_Prof(gp);
+        gp.npc[0].worldX = gp.tileSize * 38;
+        gp.npc[0].worldY = gp.tileSize * 38;
+    }   
 }
