@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import main.Panel;
+import main.UtilityTool;
 
 public class TileManager {
 	
@@ -23,37 +24,39 @@ public class TileManager {
 		loadMap("/maps/map01.txt"); //load map from text file
 	}
 	
+	//load tile images
 	public void getTileImage() {
-	
-		try {
+
+			setup(0, "grass", false);
+			setup(1, "wall", true);
+			setup(2, "path", false);
+			setup(3, "asphalt", false);
+			setup(4, "tree", true);
 			
-			//grass tile
-			tile[0] = new Tile();
-			tile[0].image = javax.imageio.ImageIO.read(getClass().getResourceAsStream("/tiles/grass.png"));
-			
-			//wall tile
-			tile[1] = new Tile();
-			tile[1].image = javax.imageio.ImageIO.read(getClass().getResourceAsStream("/tiles/wall.png"));
-			tile[1].collision = true; //wall is not walkable
-			
-			//path tile
-			tile[2] = new Tile();
-			tile[2].image = javax.imageio.ImageIO.read(getClass().getResourceAsStream("/tiles/path.png"));
-			
-			//asphalt tile
-			tile[3] = new Tile();
-			tile[3].image = javax.imageio.ImageIO.read(getClass().getResourceAsStream("/tiles/asphalt.png"));
-			
-			//tree tile
-			tile[4] = new Tile();
-			tile[4].image = javax.imageio.ImageIO.read(getClass().getResourceAsStream("/tiles/tree.png"));
-			tile[4].collision = true; //tree is not walkable
-			
+	}
+
+	//generic method to setup tiles
+	public void setup(int index, String imageName, boolean collision) {
+		UtilityTool uTool = new UtilityTool();
+
+		try{
+			//create new tile object
+			//loads tile image from resources folder
+			//scale tile image to fit tile size
+			//set collision property 
+
+			tile[index] = new Tile();
+			tile[index].image = javax.imageio.ImageIO.read(getClass().getResourceAsStream("/tiles/" + imageName+".png"));
+			tile[index].image = uTool.scaleImage(tile[index].image, gp.tileSize, gp.tileSize);
+ 			tile[index].collision = collision;
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-			
+
 	}
+
+
 	//load map from text file
 	public void loadMap(String filePath) {
 		try {
@@ -118,7 +121,7 @@ public class TileManager {
 		   worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) { //top side
 		
 			//tile[tileNum] gets the tile image from the array
-			g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null); 
+			g2.drawImage(tile[tileNum].image, screenX, screenY, null); 
 			
 		}
 			worldCol++; 

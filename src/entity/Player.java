@@ -1,20 +1,16 @@
 package entity;
 
 import main.Panel;
-
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.awt.Rectangle;
 
 
-import javax.imageio.ImageIO;
 
 import main.KeyHandler;
 
 public class Player extends Entity {
 	
-	Panel gp;
 	KeyHandler keyH;
 	
 	public final int screenX; //player's position on screen (fixed)
@@ -26,7 +22,9 @@ public class Player extends Entity {
 	public int hasPencil = 0;
 	
 	public Player(Panel gp, KeyHandler keyH) {
-		this.gp = gp;
+		//because Player is a child class of Entity, 
+		// need to call parent constructor
+		super(gp);
 		this.keyH = keyH;
 		
 		screenX = gp.screenWidth / 2 - (gp.tileSize / 2); //center of screen
@@ -57,30 +55,29 @@ public class Player extends Entity {
 	
 	// load player images
 	public void getPlayerImage() {
+
 		
-		// try-catch for IOException
-		try {
-			// ImageIO.read() to read image file
-			up1 = ImageIO.read(getClass().getResourceAsStream("/player/playerBack1.png"));
-			up2 = ImageIO.read(getClass().getResourceAsStream("/player/playerBack2.png"));
-			down1 = ImageIO.read(getClass().getResourceAsStream("/player/playerFront1.png"));
-			down2 = ImageIO.read(getClass().getResourceAsStream("/player/playerFront2.png"));
-			left1 = ImageIO.read(getClass().getResourceAsStream("/player/playerLeft1.png"));
-			left2 = ImageIO.read(getClass().getResourceAsStream("/player/playerLeft2.png"));
-			right1 = ImageIO.read(getClass().getResourceAsStream("/player/playerRight1.png"));
-			right2 = ImageIO.read(getClass().getResourceAsStream("/player/playerRight2.png"));
+			up1 = setup("/player/playerBack1");
+			up2 = setup("/player/playerBack2");
+			down1 = setup("/player/playerFront1");
+			down2 = setup("/player/playerFront2");
+			left1 = setup("/player/playerLeft1");
+			left2 = setup("/player/playerLeft2");
+			right1 = setup("/player/playerRight1");
+			right2 = setup("/player/playerRight2");
 			
-		} catch(IOException e) { //input-output error catch
-			e.printStackTrace(); //print error details
-		}
 		
 	}
 	
+	
+
+
 	public void update() {
 		
 		// check if any movement key is pressed (stops character from running in place)
 		if (keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true || keyH.rightPressed == true) {
-			
+
+
 			// player movement
 			if(keyH.upPressed == true) {
 				direction = "up";
@@ -100,13 +97,17 @@ public class Player extends Entity {
 			}
 			
 
-		
+			//CHECK TILE COLLISION (tree, wall )
 			collisionOn = false; //reset collision flag before checking
 			gp.cChecker.checkTile(this); //check tile collision
 
+			//CHECK OBJ COLLISION 
 			int objIndex = gp.cChecker.checkObject(this, true); //check object collision
 			pickUpObject(objIndex);
 
+			//CHECK NPC COLLISION
+			int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
+			interactNPC(npcIndex);
 
 			// if collision is false, player can move
 			if (collisionOn == false) {
@@ -175,10 +176,14 @@ public class Player extends Entity {
 
 			}
 		}
-
 	}
 
-
+	//TEST
+	public void interactNPC(int i){
+		if (i != 999){
+ 		
+		}
+	}
 	public void draw(Graphics2D g2) {
 			
 			BufferedImage image = null; //initially no image
@@ -220,7 +225,7 @@ public class Player extends Entity {
 				
 			}
 			// draw the player image
-			g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+			g2.drawImage(image, screenX, screenY, null);
 	}
 
 }
