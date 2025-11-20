@@ -1,6 +1,8 @@
 package main;
 
 import javax.swing.JPanel;
+
+import entity.Entity;
 import entity.Player;
 import object.ParentObject;
 import tile.TileManager;
@@ -47,7 +49,8 @@ public class Panel extends JPanel implements Runnable {
 	//ENTITY AND OBJECT
 	public Player player = new Player(this, keyH); //player instance
 	public ParentObject obj[] = new ParentObject[10]; //array of objects in the game
-	
+	public Entity npc[] = new Entity[10]; //array of NPCs in the game
+
 	//GAME STATE
 	public int gameState;
 	public final int playState = 1;
@@ -70,6 +73,7 @@ public class Panel extends JPanel implements Runnable {
 	// setup game objects (items, etc)
 	public void setupGame() {
 		aSetter.setObject(); //place objects in the game world
+		aSetter.setNPC(); //place NPCs in the game world
 
 		gameState = playState; //start game in play state
 
@@ -112,8 +116,15 @@ public class Panel extends JPanel implements Runnable {
 	
 	public void update() {
 		if (gameState == playState) {
-			//player
+			//update player
 			player.update();
+
+			//update npc
+			for(int i = 0; i < npc.length; i ++){
+				if(npc[i] != null){
+					npc[i].update();
+				}
+			}
 		}
 		if (gameState == pauseState) {
 			//nothing for now
@@ -136,6 +147,14 @@ public class Panel extends JPanel implements Runnable {
 				obj[i].draw(g2, this); //draw objects (middle layer)
 			}
 		}
+
+		//NPC
+		for (int i =0; i<npc.length; i++) {//loop through all NPCs
+			if (npc[i] != null) { //draw only if NPC exists
+				npc[i].draw(g2); //draw NPCs 
+			}
+		}
+
 		//player
 		player.draw(g2); //draw player (top most)
 

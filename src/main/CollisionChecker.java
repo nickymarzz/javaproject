@@ -18,10 +18,10 @@ public class CollisionChecker {
         // by adding the entity's world map position to the hit box offsets
         // For example, if the entity is at worldX=150 and the hit box x offset is 8,
         // then the left edge of the hit box in world coordinates is at 150 + 8 = 158
-        int entityLeftWorldX = entity.worldX + entity.solidArea.x; 
-        int entityRightWorldX = entity.worldX + entity.solidArea.x + entity.solidArea.width;
-        int entityTopWorldY = entity.worldY + entity.solidArea.y;
-        int entityBottomWorldY = entity.worldY + entity.solidArea.y + entity.solidArea.height;
+       int entityLeftWorldX = entity.worldX + entity.solidAreaDefaultX;
+        int entityRightWorldX = entity.worldX + entity.solidAreaDefaultX + entity.solidArea.width;
+        int entityTopWorldY = entity.worldY + entity.solidAreaDefaultY;
+        int entityBottomWorldY = entity.worldY + entity.solidAreaDefaultY + entity.solidArea.height;
 
         // Calculate the tile columns and rows that the edges of the hit box are in by dividing
         // the world coordinates by the tile size
@@ -91,13 +91,13 @@ public class CollisionChecker {
     for (int i = 0; i < gp.obj.length; i++) {
         if (gp.obj[i] != null) {
 
-            // Get entity's hit box position in world coordinates
-            entity.solidArea.x = entity.worldX + entity.solidArea.x;
-            entity.solidArea.y = entity.worldY + entity.solidArea.y;
+           // Use default offsets
+        entity.solidArea.x = entity.worldX + entity.solidAreaDefaultX;
+        entity.solidArea.y = entity.worldY + entity.solidAreaDefaultY;
 
-            // Get object's hit box position in world coordinates
-            gp.obj[i].solidArea.x = gp.obj[i].worldX + gp.obj[i].solidArea.x;
-            gp.obj[i].solidArea.y = gp.obj[i].worldY + gp.obj[i].solidArea.y;
+        gp.obj[i].solidArea.x = gp.obj[i].worldX + gp.obj[i].solidAreaDefaultX;
+        gp.obj[i].solidArea.y = gp.obj[i].worldY + gp.obj[i].solidAreaDefaultY;
+
 
 
             // Check for intersection between entity and object hit boxes
@@ -158,5 +158,120 @@ public class CollisionChecker {
     return index;
 }
 
+//player to NPC collision
+public int checkEntity(Entity entity, Entity[] target){
+       int index = 999; 
+
+
+    for (int i = 0; i < target.length; i++) {
+        if (target[i] != null && target[i] != entity) {
+
+        // Get entity's hit box position in world coordinates
+        entity.solidArea.x = entity.worldX + entity.solidAreaDefaultX;
+        entity.solidArea.y = entity.worldY + entity.solidAreaDefaultY;
+        
+        // Get object's hit box position in world coordinates
+        target[i].solidArea.x = target[i].worldX + target[i].solidAreaDefaultX;
+        target[i].solidArea.y = target[i].worldY + target[i].solidAreaDefaultY;
+
+
+            // Check for intersection between entity and object hit boxes
+           switch(entity.direction) {
+                case "up":
+                    entity.solidArea.y -= entity.speed;
+                    if(entity.solidArea.intersects(target[i].solidArea)) { 
+                      
+                            entity.collisionOn = true;
+                            index = i;
+                        
+                    }
+                    break;
+                case "down":
+                    entity.solidArea.y += entity.speed;
+                    if(entity.solidArea.intersects(target[i].solidArea)) {
+                            entity.collisionOn = true;
+                            index = i;
+                        
+                    }
+                    break;
+                case "left":
+                    entity.solidArea.x -= entity.speed;
+                    if(entity.solidArea.intersects(target[i].solidArea)) {
+                            entity.collisionOn = true;
+                            index = i;
+                        
+                    }
+                    break;
+                case "right":
+                    entity.solidArea.x += entity.speed;
+                    if(entity.solidArea.intersects(target[i].solidArea)) {
+                            entity.collisionOn = true;
+                            index = i;
+                        
+                    }
+                    break;
+            }
+
+            // Reset hit box positions to default for next check
+            entity.solidArea.x = entity.solidAreaDefaultX;
+            entity.solidArea.y = entity.solidAreaDefaultY;
+            target[i].solidArea.x = target[i].solidAreaDefaultX;
+            target[i].solidArea.y = target[i].solidAreaDefaultY;
+
+             if (entity.collisionOn) {
+                break;
+            }
+        }
+    }
+    return index;
+}
+
+//NPC to player collision
+public void checkPlayer(Entity entity){
+
+
+    // Get entity's hit box position in world coordinates
+   entity.solidArea.x = entity.worldX + entity.solidAreaDefaultX;
+entity.solidArea.y = entity.worldY + entity.solidAreaDefaultY;
+    // Get object's hit box position in world coordinates
+   gp.player.solidArea.x = gp.player.worldX + gp.player.solidAreaDefaultX;
+gp.player.solidArea.y = gp.player.worldY + gp.player.solidAreaDefaultY;
+
+
+            // Check for intersection between entity and object hit boxes
+           switch(entity.direction) {
+                case "up":
+                    entity.solidArea.y -= entity.speed;
+                    if(entity.solidArea.intersects(gp.player.solidArea)) { 
+                            entity.collisionOn = true;
+                         }
+                    break;
+                case "down":
+                    entity.solidArea.y += entity.speed;
+                    if(entity.solidArea.intersects( gp.player.solidArea)) {
+                            entity.collisionOn = true;
+                        }
+                    break;
+                case "left":
+                    entity.solidArea.x -= entity.speed;
+                    if(entity.solidArea.intersects( gp.player.solidArea)) {
+                            entity.collisionOn = true;
+                        }
+                    break;
+                case "right":
+                    entity.solidArea.x += entity.speed;
+                    if(entity.solidArea.intersects(gp.player.solidArea)) {
+                            entity.collisionOn = true;
+                        }
+                    break;
+            }
+
+            // Reset hit box positions to default for next check
+            entity.solidArea.x = entity.solidAreaDefaultX;
+            entity.solidArea.y = entity.solidAreaDefaultY;
+             gp.player.solidArea.x = gp.player.solidAreaDefaultX;
+             gp.player.solidArea.y = gp.player.solidAreaDefaultY;
+        }
+    
 
 }
