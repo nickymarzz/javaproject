@@ -23,6 +23,7 @@ public class UI {
 
     //end the game(not implemented yet)
     public boolean gameFinished = false;
+    public int gameId = -1;
 
     public UI(Panel gp) {
         this.gp = gp;
@@ -45,6 +46,10 @@ public class UI {
     public void showMessage(String text) {
         message = text;
         messageOn = true;
+    }
+
+    public void setGameId(int id) {
+        this.gameId = id;
     }
 
     //draws the user interface

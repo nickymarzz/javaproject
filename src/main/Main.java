@@ -18,6 +18,11 @@ public class Main {
 		window.setLocationRelativeTo(null); // center window on screen
 		window.setVisible(true);
 		
+		// Create a new game session with a unique name based on timestamp
+		String sessionName = "Game Session - " + System.currentTimeMillis();
+		int gameId = GameDataClient.createGameSession(sessionName, "Player completed finals");
+		mainPanel.ui.setGameId(gameId);
+		
 		mainPanel.setupGame(); // setup game objects
 		mainPanel.startGameThread(); // start the game loop
 	}
