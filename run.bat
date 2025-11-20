@@ -1,6 +1,6 @@
 @echo off
 echo Compiling...
-javac -sourcepath src -d bin src/main/*.java src/entity/*.java src/module-info.java
+javac -sourcepath src -d bin src/main/*.java src/entity/*.java src/object/*.java src/tile/*.java src/module-info.java  
 echo.
 echo Running...
-java -cp "bin;res" main.Main
+java -cp "bin;res;lib/*" main.Main
