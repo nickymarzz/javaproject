@@ -24,11 +24,14 @@ public class UI {
     //end the game(not implemented yet)
     public boolean gameFinished = false;
 
+    public String currentDialogue = "";
+
     public UI(Panel gp) {
         this.gp = gp;
 
         arial_40 = new Font("Arial", Font.PLAIN, 40);
         arial_80B = new Font("Arial", Font.BOLD, 80);
+       
 
         //load item images
         Coffee coffee = new Coffee(gp);
@@ -55,12 +58,17 @@ public class UI {
         g2.setFont(arial_40);
         g2.setColor(Color.white);
 
+        //PLAY 
         if (gp.gameState == gp.playState) {
           //nothing to draw in play state
         }
-        //PAUSE SCREEN
+        //PAUSE
         if (gp.gameState == gp.pauseState) {
             drawPauseScreen();
+        }
+        //DIALOGUE
+        if (gp.gameState == gp.dialogueState){
+            drawDialogueScreen();
         }
 
         //GAME FINISH SCREEN
@@ -99,14 +107,14 @@ public class UI {
         g2.setFont(arial_40);
         g2.setColor(Color.white);
 
-        g2.drawImage(coffeeImage, gp.tileSize/2, gp.tileSize/2, gp.tileSize, gp.tileSize, null);
-        g2.drawString("x " + gp.player.hasCoffee, 74, 65);
+        g2.drawImage(coffeeImage, gp.tileSize/2, gp.screenHeight - gp.tileSize, gp.tileSize, gp.tileSize, null);
+        g2.drawString("x " + gp.player.hasCoffee, 74, gp.screenHeight-10);
 
-         g2.drawImage(cheatSheetImage, gp.tileSize*3, gp.tileSize/2, gp.tileSize, gp.tileSize, null);
-        g2.drawString("x " + gp.player.hasCheatSheet, 194, 65);
+         g2.drawImage(cheatSheetImage, gp.tileSize*3, gp.screenHeight - gp.tileSize, gp.tileSize, gp.tileSize, null);
+        g2.drawString("x " + gp.player.hasCheatSheet, 194, gp.screenHeight-10);
 
-         g2.drawImage(pencilImage, 260, gp.tileSize/2, gp.tileSize, gp.tileSize, null);
-        g2.drawString("x " + gp.player.hasPencil, 310, 65);
+         g2.drawImage(pencilImage, 260, gp.screenHeight - gp.tileSize, gp.tileSize, gp.tileSize, null);
+        g2.drawString("x " + gp.player.hasPencil, 310, gp.screenHeight-10);
 
         //MESSAGE DISPLAY
         if (messageOn==true) {
@@ -139,5 +147,43 @@ public class UI {
         int length = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
         int x = gp.screenWidth/2 - length/2;
         return x;
+    }
+    //DRAW DIALOGUE SCREEN
+    public void drawDialogueScreen(){
+        //SIZE SETTINGS
+        int x = gp.tileSize*2;
+        int y = gp.tileSize/2;
+        int width = gp.screenWidth - (gp.tileSize*4);
+        int height = gp.tileSize*4;
+        
+        drawSubWindow(x, y, width, height);
+
+        //TEXT SETTINGS
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN,30));
+        x+= gp.tileSize;
+        y+= gp.tileSize;
+        
+        //Split text in dialogue and does \n when "\n" is used in dialogue
+        //cuz \n does not work in graphics g2 
+        for (String line : currentDialogue.split("\n")){
+             g2.drawString(line, x, y);
+            //next line via +y axis
+             y+= 40;
+
+        }
+       
+
+    }
+    public void drawSubWindow(int x, int y, int width, int height ){
+        //BLACK (TRANSLUCENT)
+        Color c = new Color(0,0,0,220);
+        g2.setColor(c);
+        g2.fillRoundRect(x, y, width, height, 35, 35);
+        
+        //WHITE BORDER
+        c = new Color(255,255,255);
+        g2.setColor(c);
+        g2.setStroke(new BasicStroke(5));
+        g2.drawRoundRect(x+5, y+5, width-10, height-10, 25, 25);
     }
 }

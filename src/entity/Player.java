@@ -6,7 +6,6 @@ import java.awt.image.BufferedImage;
 import java.awt.Rectangle;
 
 
-
 import main.KeyHandler;
 
 public class Player extends Entity {
@@ -178,11 +177,17 @@ public class Player extends Entity {
 		}
 	}
 
-	//TEST
+	
 	public void interactNPC(int i){
 		if (i != 999){
- 		
+			//Dialogue when press  ENTER
+			if(gp.keyH.enterPressed == true){
+			gp.gameState = gp.dialogueState;
+			gp.npc[i].speak();
+			}	
 		}
+		//prevent perma ENTER pressed(reset)
+		gp.keyH.enterPressed = false;
 	}
 	public void draw(Graphics2D g2) {
 			

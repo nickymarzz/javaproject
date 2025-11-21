@@ -7,7 +7,7 @@ import java.awt.event.KeyListener;
 public class KeyHandler implements KeyListener {
 	
 	Panel gp;
-	public boolean upPressed, downPressed, leftPressed, rightPressed;
+	public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed;
 
 
 	//constructor
@@ -26,7 +26,10 @@ public class KeyHandler implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		
 		int code = e.getKeyCode();
-		
+
+		//PLAY STATE
+		if (gp.gameState == gp.playState){
+			
 		if(code == KeyEvent.VK_W) { 
 			upPressed = true; //W key is pressed(up)
 		}
@@ -40,14 +43,25 @@ public class KeyHandler implements KeyListener {
 			rightPressed = true; // D key is pressed(right)
 		}
 		if (code == KeyEvent.VK_P) {
-			if (gp.gameState == gp.playState) {
-				gp.gameState = gp.pauseState; //change to pause state
-			} else if (gp.gameState == gp.pauseState) {
-				gp.gameState = gp.playState; //change to play state
-			}
+			gp.gameState = gp.pauseState; //change to pause state
 		}
-		
+		if (code == KeyEvent.VK_ENTER){
+			enterPressed = true;
+		}	
 	}
+		//PAUSE STATE
+		if (gp.gameState==gp.pauseState){
+			if (code == KeyEvent.VK_P) {
+			gp.gameState = gp.playState; //change to play state
+		}	
+	}
+		//DIALOGUE STATE
+		if (gp.gameState == gp.dialogueState){
+		if (code == KeyEvent.VK_ENTER){
+			gp.gameState =  gp.playState;
+		}
+	}
+}
 
 	@Override
 	public void keyReleased(KeyEvent e) {

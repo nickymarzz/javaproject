@@ -12,9 +12,10 @@ public class NPC_Prof extends Entity {
 
         // set default start position and speed
         direction = "down";
-        speed = 2;
+        speed = 1;
 
         getProfImage();
+		setDialogue();
     }
     // load player images
 	public void getProfImage() {
@@ -29,7 +30,23 @@ public class NPC_Prof extends Entity {
 		right2 = setup("/npc/profRight2");
 }
 
-@Override
+public void setDialogue(){
+
+	dialogues[0] = "Hello.";
+	dialogues[1] = "This is a dialogue";
+	dialogues[2] = "Have you studied for your JAVA \nfinals?";
+	dialogues[3] = "Only the best may get an A+...";
+	dialogues[4] = "Show me what you got!!";
+	dialogues[5] = "Question1";
+	dialogues[6] = "Question2";
+
+
+
+
+}
+
+
+
 public void setAction(){
 
 	actionCounter++;
@@ -58,5 +75,14 @@ public void setAction(){
 		}
 
 	}	
+
+	//uses speak from entity
+	public void speak(){
+	super.speak();
+		
+		
+	}
+
+
 
 }

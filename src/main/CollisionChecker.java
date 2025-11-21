@@ -148,11 +148,10 @@ public class CollisionChecker {
                     break;
             }
 
-            // Reset hit box positions to default for next check
-            entity.solidArea.x = entity.solidAreaDefaultX;
-            entity.solidArea.y = entity.solidAreaDefaultY;
-            gp.obj[i].solidArea.x = gp.obj[i].solidAreaDefaultX;
-            gp.obj[i].solidArea.y = gp.obj[i].solidAreaDefaultY;
+        // Reset hit box positions to default for next check
+        entity.solidArea.x = entity.worldX + entity.solidAreaDefaultX;
+        entity.solidArea.y = entity.worldY + entity.solidAreaDefaultY;
+
         }
     }
     return index;
@@ -213,10 +212,10 @@ public int checkEntity(Entity entity, Entity[] target){
             }
 
             // Reset hit box positions to default for next check
-            entity.solidArea.x = entity.solidAreaDefaultX;
-            entity.solidArea.y = entity.solidAreaDefaultY;
-            target[i].solidArea.x = target[i].solidAreaDefaultX;
-            target[i].solidArea.y = target[i].solidAreaDefaultY;
+            entity.solidArea.x = entity.worldX + entity.solidAreaDefaultX;
+            entity.solidArea.y = entity.worldY + entity.solidAreaDefaultY;
+
+           
 
              if (entity.collisionOn) {
                 break;
@@ -231,11 +230,11 @@ public void checkPlayer(Entity entity){
 
 
     // Get entity's hit box position in world coordinates
-   entity.solidArea.x = entity.worldX + entity.solidAreaDefaultX;
-entity.solidArea.y = entity.worldY + entity.solidAreaDefaultY;
+    entity.solidArea.x = entity.worldX + entity.solidAreaDefaultX;
+    entity.solidArea.y = entity.worldY + entity.solidAreaDefaultY;
     // Get object's hit box position in world coordinates
-   gp.player.solidArea.x = gp.player.worldX + gp.player.solidAreaDefaultX;
-gp.player.solidArea.y = gp.player.worldY + gp.player.solidAreaDefaultY;
+    gp.player.solidArea.x = gp.player.worldX + gp.player.solidAreaDefaultX;
+    gp.player.solidArea.y = gp.player.worldY + gp.player.solidAreaDefaultY;
 
 
             // Check for intersection between entity and object hit boxes
@@ -267,10 +266,9 @@ gp.player.solidArea.y = gp.player.worldY + gp.player.solidAreaDefaultY;
             }
 
             // Reset hit box positions to default for next check
-            entity.solidArea.x = entity.solidAreaDefaultX;
-            entity.solidArea.y = entity.solidAreaDefaultY;
-             gp.player.solidArea.x = gp.player.solidAreaDefaultX;
-             gp.player.solidArea.y = gp.player.solidAreaDefaultY;
+            entity.solidArea.x = entity.worldX + entity.solidAreaDefaultX;
+            entity.solidArea.y = entity.worldY + entity.solidAreaDefaultY;
+           
         }
     
 

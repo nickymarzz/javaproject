@@ -38,7 +38,7 @@ public class Panel extends JPanel implements Runnable {
 	
 	//SYSTEM
 	TileManager tileM = new TileManager(this); //tile manager instance
-	KeyHandler keyH = new KeyHandler(this); //key handler instance
+	public KeyHandler keyH = new KeyHandler(this); //key handler instance
 	Thread gameThread; //keeps the game running like a clock 
 	public CollisionChecker cChecker = new CollisionChecker(this); //collision checker instance
 	public AssetSetter aSetter = new AssetSetter(this); //asset setter instance
@@ -55,7 +55,7 @@ public class Panel extends JPanel implements Runnable {
 	public int gameState;
 	public final int playState = 1;
 	public final int pauseState = 2;
-
+	public final int dialogueState = 3;
 
 	// panel constructor
 	public Panel() {
