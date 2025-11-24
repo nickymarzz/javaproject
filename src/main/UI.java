@@ -21,8 +21,10 @@ public class UI {
     public String message = "";
     int messageCounter = 0;
 
-    //end the game(not implemented yet)
-    public boolean gameFinished = false;
+    //trigger end(pass and fail)
+    public boolean gameFinishedPass = false;
+    public boolean gameFinishedFail = false;
+
 
     public String currentDialogue = "";
 
@@ -72,7 +74,7 @@ public class UI {
         }
 
         //GAME FINISH SCREEN
-        if (gameFinished == true) {
+        if (gameFinishedPass == true) {
             g2.setFont(arial_40);
             g2.setColor(Color.white);
 

@@ -58,7 +58,7 @@ public class KeyHandler implements KeyListener {
 		//DIALOGUE STATE
 		if (gp.gameState == gp.dialogueState){
 		if (code == KeyEvent.VK_ENTER){
-			gp.gameState =  gp.playState;
+			enterPressed = true;
 		}
 	}
 }
@@ -79,6 +79,9 @@ public class KeyHandler implements KeyListener {
 		}
 		if (code == KeyEvent.VK_D) {
 			rightPressed = false; // D key is released
+		}
+		if (code == KeyEvent.VK_ENTER){
+			enterPressed = false;
 		}
 		
 	}

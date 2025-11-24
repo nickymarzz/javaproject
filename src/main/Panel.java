@@ -50,6 +50,7 @@ public class Panel extends JPanel implements Runnable {
 	public Player player = new Player(this, keyH); //player instance
 	public ParentObject obj[] = new ParentObject[10]; //array of objects in the game
 	public Entity npc[] = new Entity[10]; //array of NPCs in the game
+	public int currentNPCIndex = 999; //track which npc
 
 	//GAME STATE
 	public int gameState;
@@ -126,6 +127,18 @@ public class Panel extends JPanel implements Runnable {
 				}
 			}
 		}
+		if (gameState == dialogueState) {
+            if (keyH.enterPressed == true) {
+                
+                // Advance the dialogue line for the current NPC
+                if (currentNPCIndex != 999 && npc[currentNPCIndex] != null) {
+                    npc[currentNPCIndex].speak(); 
+                } 
+                
+                // Consume the ENTER keypress
+                keyH.enterPressed = false; 
+            }
+        }
 		if (gameState == pauseState) {
 			//nothing for now
 		}

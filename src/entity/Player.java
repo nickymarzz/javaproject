@@ -73,6 +73,8 @@ public class Player extends Entity {
 
 	public void update() {
 		
+		collisionOn = false;
+		
 		// check if any movement key is pressed (stops character from running in place)
 		if (keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true || keyH.rightPressed == true) {
 
@@ -160,10 +162,6 @@ public class Player extends Entity {
 			hasCheatSheet++;
 			gp.obj[i] = null; //remove cheat sheet from game world
 			gp.ui.showMessage("Cheat Sheet obtained!");
-//---------------------------------------------------------------------------
-			//JUST FOR TESTING PURPOSES (delete later)
-			gp.ui.gameFinished = true; //trigger game finish
-//---------------------------------------------------------------------------
 			break;
 
 		case "Pencil":
@@ -182,12 +180,14 @@ public class Player extends Entity {
 		if (i != 999){
 			//Dialogue when press  ENTER
 			if(gp.keyH.enterPressed == true){
+			
+			gp.currentNPCIndex = i;
+
 			gp.gameState = gp.dialogueState;
 			gp.npc[i].speak();
+			gp.keyH.enterPressed = false;
 			}	
 		}
-		//prevent perma ENTER pressed(reset)
-		gp.keyH.enterPressed = false;
 	}
 	public void draw(Graphics2D g2) {
 			

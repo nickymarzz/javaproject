@@ -53,12 +53,15 @@ public class Entity { // Base class for all entities(Player, NPC etc) in the gam
 	public void speak(){
 		//prevent null exeption error
 		if (dialogues[dialogueIndex]==null){
-			dialogueIndex = 0;
+		gp.gameState = gp.playState;
+		gp.ui.gameFinishedPass = true;
 		}
 
 		//loops dialogue
 		gp.ui.currentDialogue = dialogues[dialogueIndex];
 		dialogueIndex++;
+
+		
 		//make npc face player during dialogue
 		switch(gp.player.direction){
 			case "up":
