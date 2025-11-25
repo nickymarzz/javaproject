@@ -21,12 +21,8 @@ public class UI {
     public String message = "";
     int messageCounter = 0;
 
-    //trigger end(pass and fail)
-    public boolean gameFinishedPass = false;
-    public boolean gameFinishedFail = false;
-
-
-    public String currentDialogue = "";
+    //end the game(not implemented yet)
+    public boolean gameFinished = false;
 
     public UI(Panel gp) {
         this.gp = gp;
@@ -50,6 +46,10 @@ public class UI {
     public void showMessage(String text) {
         message = text;
         messageOn = true;
+    }
+
+    public void setGameId(int id) {
+        this.gameId = id;
     }
 
     //draws the user interface

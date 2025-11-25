@@ -157,18 +157,30 @@ public class Player extends Entity {
 			hasCoffee++;
 			gp.obj[i] = null; //remove coffee from game world
 			gp.ui.showMessage("Coffee obtained!");
+			// Log to database immediately
+			if (gp.ui.gameId > 0) {
+				main.GameDataClient.recordCollection(gp.ui.gameId, main.ResourceType.COFFEE, 1, "Collected during gameplay");
+			}
 			break;
 
 		case "Cheat Sheet":
 			hasCheatSheet++;
 			gp.obj[i] = null; //remove cheat sheet from game world
 			gp.ui.showMessage("Cheat Sheet obtained!");
+//---------------------------------------------------------------------------
+			//JUST FOR TESTING PURPOSES (delete later)
+			gp.ui.gameFinished = true; //trigger game finish
+//---------------------------------------------------------------------------
 			break;
 
 		case "Pencil":
 			hasPencil++;
 			gp.obj[i] = null; //remove pencil from game world
 			gp.ui.showMessage("Pencil obtained!");
+			// Log to database immediately
+			if (gp.ui.gameId > 0) {
+				main.GameDataClient.recordCollection(gp.ui.gameId, main.ResourceType.PENCIL, 1, "Collected during gameplay");
+			}
 			break;
 
 
