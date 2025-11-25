@@ -60,9 +60,13 @@ public class UI {
         g2.setFont(arial_40);
         g2.setColor(Color.white);
 
+       if (!(gameFinishedPass == true || gameFinishedFail == true)) {
+        drawPlayScreen();
+        }
+        
         //PLAY 
         if (gp.gameState == gp.playState) {
-          //nothing to draw in play state
+          //nothing
         }
         //PAUSE
         if (gp.gameState == gp.pauseState) {
@@ -72,56 +76,94 @@ public class UI {
         if (gp.gameState == gp.dialogueState){
             drawDialogueScreen();
         }
+        
+        // QUIZ STATE
+        if (gp.gameState == gp.quizState) {
+            drawQuizScreen();
+        }
 
         //GAME FINISH SCREEN
-        if (gameFinishedPass == true) {
+        if (gameFinishedPass == true|| gameFinishedFail==true) {
+
+           
+            Color c = new Color(0, 0, 0, 150); // Black, 150/255 opacity
+            g2.setColor(c);
+            // Draw rectangle covering the entire screen
+            g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
+
+
             g2.setFont(arial_40);
             g2.setColor(Color.white);
 
             String text;
+            String scoreText;
             int textLength;
             int x;
             int y;
-
-            //display congratulations message
-            text = "You Passed Your Finals!";
-            textLength = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
             
-            //center the text by subtracting half of message length
-            //from half of the screen width
-            x = gp.screenWidth/2 - textLength/2;
-            y = gp.screenHeight/2 - (gp.tileSize*3);
-            g2.drawString(text, x, y);
+            int score = gp.correctAnswers;
+            int total = gp.questions.length;
+            scoreText = "Score: " + score + " out of " + total;
 
-            g2.setFont(arial_80B);
-            g2.setColor(Color.yellow);
+        if (gameFinishedPass == true) {
+             text = "You Passed Your Finals!";
+             g2.setColor(Color.white);
+        } else { // gameFinishedFail == true
+             text = "You Failed Your Finals...";
+             g2.setColor(Color.RED);
+             g2.setFont(g2.getFont().deriveFont(55F));
+        }
+        
+        // Draw Main Result Title
+        textLength = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+        x = gp.screenWidth/2 - textLength/2;
+        y = gp.screenHeight/2 - (gp.tileSize*3);
+        g2.drawString(text, x, y);
+
+        // Draw Score Sub-text
+        g2.setColor(Color.LIGHT_GRAY);
+        textLength = (int)g2.getFontMetrics().getStringBounds(scoreText, g2).getWidth();
+        x = gp.screenWidth/2 - textLength/2;
+        g2.drawString(scoreText, x, y + gp.tileSize);
+
+
+        g2.setFont(arial_80B);
+
+        if (gameFinishedPass == true) {
             text = "Congratulations!";
-            textLength = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-            x = gp.screenWidth/2 - textLength/2;        
-            y = gp.screenHeight/2 + (gp.tileSize*2);
-            g2.drawString(text, x, y);
+            g2.setColor(Color.YELLOW);
+        } else {
+            text = "Try Again Next Time.";
+            g2.setColor(Color.ORANGE);
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 60F));
+        }
+        
+        textLength = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+        x = gp.screenWidth/2 - textLength/2;         
+        y = gp.screenHeight/2 + (gp.tileSize*2);
+        g2.drawString(text, x, y);
 
-            //stop the game
-            gp.gameThread = null;
+        // stop the game thread
+        gp.gameThread = null;
         }
         else{
-            //INVENTORY DISPLAY
+         //INVENTORY DISPLAY
         g2.setFont(arial_40);
         g2.setColor(Color.white);
 
-        g2.drawImage(coffeeImage, gp.tileSize/2, gp.screenHeight - gp.tileSize, gp.tileSize, gp.tileSize, null);
-        g2.drawString("x " + gp.player.hasCoffee, 74, gp.screenHeight-10);
+        g2.drawImage(coffeeImage, gp.tileSize/2, gp.screenHeight - gp.tileSize-10, gp.tileSize, gp.tileSize, null);
+        g2.drawString("x " + gp.player.hasCoffee, 74, gp.screenHeight-15);
 
-         g2.drawImage(cheatSheetImage, gp.tileSize*3, gp.screenHeight - gp.tileSize, gp.tileSize, gp.tileSize, null);
-        g2.drawString("x " + gp.player.hasCheatSheet, 194, gp.screenHeight-10);
+         g2.drawImage(cheatSheetImage, gp.tileSize*3, gp.screenHeight - gp.tileSize-5, gp.tileSize, gp.tileSize, null);
+        g2.drawString("x " + gp.player.hasCheatSheet, 194, gp.screenHeight-15);
 
-         g2.drawImage(pencilImage, 260, gp.screenHeight - gp.tileSize, gp.tileSize, gp.tileSize, null);
-        g2.drawString("x " + gp.player.hasPencil, 310, gp.screenHeight-10);
+         g2.drawImage(pencilImage, 260, gp.screenHeight - gp.tileSize-5, gp.tileSize, gp.tileSize, null);
+        g2.drawString("x " + gp.player.hasPencil, 310, gp.screenHeight-15);
 
         //MESSAGE DISPLAY
         if (messageOn==true) {
             g2.setFont(g2.getFont().deriveFont(30F));
-            g2.drawString(message, gp.tileSize/2, gp.tileSize*5);
+            g2.drawString(message, gp.tileSize/2, gp.tileSize*10);
 
             //timer for message to disappear
             messageCounter++;
@@ -150,6 +192,7 @@ public class UI {
         int x = gp.screenWidth/2 - length/2;
         return x;
     }
+
     //DRAW DIALOGUE SCREEN
     public void drawDialogueScreen(){
         //SIZE SETTINGS
@@ -187,5 +230,69 @@ public class UI {
         g2.setColor(c);
         g2.setStroke(new BasicStroke(5));
         g2.drawRoundRect(x+5, y+5, width-10, height-10, 25, 25);
+    }
+
+    public void drawQuizScreen() {
+        
+        int frameX = gp.tileSize;
+        int frameY = gp.tileSize;
+        int frameWidth = gp.screenWidth - gp.tileSize * 2;
+        int frameHeight = gp.screenHeight - gp.tileSize * 4;
+
+        if (gp.questions == null) {
+        return; 
+    }
+        
+        //draw in a subwindow
+        drawSubWindow(frameX, frameY, frameWidth, frameHeight);
+        
+        // Text start position
+        int textX = frameX + gp.tileSize;
+        int textY = frameY + gp.tileSize;
+        
+        // Set Font for Quiz
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 36F));
+      
+        // Retrieve the current question text
+        String question = gp.questions[gp.currentQuestion];
+        g2.setColor(Color.YELLOW); // Highlight the question
+        
+        // Draw the question 
+        for(String line : question.split("\n")) {
+            g2.drawString(line, textX, textY);
+            textY += 45; // Move down for the next line
+        }
+        
+        textY += gp.tileSize / 2; // Space between question and options
+
+       //Draw answers
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 30F));
+        String[] options = gp.options[gp.currentQuestion];
+
+        for (int i = 0; i < options.length; i++) {
+            String option = options[i];
+            
+            // Highlight the currently selected option
+            if (i == gp.quizSelection) {
+                g2.setColor(Color.RED);
+                // Draw the selection arrow
+                g2.drawString(">", textX - gp.tileSize / 2, textY);
+                g2.setColor(Color.CYAN); // Selected option text color
+            } else {
+                g2.setColor(Color.WHITE); // Unselected option text color
+            }
+            
+            g2.drawString(option, textX, textY);
+            textY += 40; // Line height for options
+        }
+    }
+
+    public void drawPlayScreen(){
+        int x = 0;
+        int y = gp.tileSize*9;
+        int width = gp.screenWidth - (gp.tileSize*8);
+        int height = gp.tileSize*3;
+
+         drawSubWindow(x, y, width, height);
     }
 }

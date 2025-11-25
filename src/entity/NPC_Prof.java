@@ -33,15 +33,10 @@ public class NPC_Prof extends Entity {
 public void setDialogue(){
 
 	dialogues[0] = "Hello.";
-	dialogues[1] = "This is a dialogue";
-	dialogues[2] = "Have you studied for your JAVA \nfinals?";
-	dialogues[3] = "Only the best may get an A+...";
-	dialogues[4] = "Show me what you got!!";
-	dialogues[5] = "Question1";
-	dialogues[6] = "Question2";
-
-
-
+	dialogues[1] = "Have you studied for your JAVA \nfinals?";
+	dialogues[2] = "Only the best may get an A+...";
+	dialogues[3] = "Show me what you got!!";
+	
 
 }
 
@@ -76,12 +71,23 @@ public void setAction(){
 
 	}	
 
-	//uses speak from entity
-	public void speak(){
-	super.speak();
-		
-		
-	}
+
+	@Override
+    public void endDialogue() {
+        
+        // This is called by the inherited speak() method after the last line is displayed.
+        
+        //Transition to the Quiz State
+        gp.gameState = gp.quizState;
+        
+        //Reset Quiz Variables
+        gp.currentQuestion = 0; 
+        gp.quizSelection = 0;   
+        gp.correctAnswers = 0;
+        
+        //Reset dialogueIndex
+        dialogueIndex = 0; 
+    }
 
 
 

@@ -74,6 +74,7 @@ public class Player extends Entity {
 	public void update() {
 		
 		collisionOn = false;
+
 		
 		// check if any movement key is pressed (stops character from running in place)
 		if (keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true || keyH.rightPressed == true) {

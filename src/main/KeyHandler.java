@@ -61,6 +61,28 @@ public class KeyHandler implements KeyListener {
 			enterPressed = true;
 		}
 	}
+
+		//QUIZ STATE
+		if (gp.gameState == gp.quizState){
+    	if (code == KeyEvent.VK_W) { // Move selection Up
+        	gp.quizSelection--;
+        if (gp.quizSelection < 0) {
+            gp.quizSelection = gp.options[gp.currentQuestion].length - 1; // Wrap around
+        }
+    }
+    	if (code == KeyEvent.VK_S) { // Move selection Down
+       		 gp.quizSelection++;
+        if (gp.quizSelection >= gp.options[gp.currentQuestion].length) {
+            gp.quizSelection = 0; // Wrap around
+        }
+    }
+    if (code == KeyEvent.VK_ENTER){
+        enterPressed = true; // Set flag to be handled in Panel update/logic
+    }
+}
+
+
+
 }
 
 	@Override

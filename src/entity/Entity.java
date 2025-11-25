@@ -53,8 +53,8 @@ public class Entity { // Base class for all entities(Player, NPC etc) in the gam
 	public void speak(){
 		//prevent null exeption error
 		if (dialogues[dialogueIndex]==null){
-		gp.gameState = gp.playState;
-		gp.ui.gameFinishedPass = true;
+		endDialogue(); 
+        return;
 		}
 
 		//loops dialogue
@@ -78,6 +78,14 @@ public class Entity { // Base class for all entities(Player, NPC etc) in the gam
 				break;
 		}
 	}
+
+	public void endDialogue() {
+        // This is the default ending
+        // It resets the dialogue and triggers the "Game Finished Pass" screen, 
+        dialogueIndex = 0;
+        gp.gameState = gp.playState;
+        gp.ui.gameFinishedPass = true; // Default NPC interaction leads to game end
+    }
 	public void update(){
 
 		setAction();

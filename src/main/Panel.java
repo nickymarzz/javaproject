@@ -52,11 +52,21 @@ public class Panel extends JPanel implements Runnable {
 	public Entity npc[] = new Entity[10]; //array of NPCs in the game
 	public int currentNPCIndex = 999; //track which npc
 
+	//QUIZ SETTINGS
+	public String[] questions;
+	public String[][] options;
+	public int[] answers;
+	public int currentQuestion = 0;
+	public int quizSelection = 0; // 0, 1, 2, or 3 for option A, B, C, D
+	public int correctAnswers = 0;
+	final int passScore = 2;
+
 	//GAME STATE
 	public int gameState;
 	public final int playState = 1;
 	public final int pauseState = 2;
 	public final int dialogueState = 3;
+	public final int quizState = 4;
 
 	// panel constructor
 	public Panel() {
@@ -73,6 +83,9 @@ public class Panel extends JPanel implements Runnable {
 
 	// setup game objects (items, etc)
 	public void setupGame() {
+
+		setupQuiz();
+
 		aSetter.setObject(); //place objects in the game world
 		aSetter.setNPC(); //place NPCs in the game world
 
@@ -80,7 +93,26 @@ public class Panel extends JPanel implements Runnable {
 
 	}
 
-	
+	//setup quiz data
+	public void setupQuiz() {
+    questions = new String[] {
+        "What is the keyword for inheritance \nin Java?",
+        "Which access modifier makes a \nfield visible everywhere?",
+        "How do you declare a constant in \nJava?"
+    };
+
+    options = new String[][] {
+        {"A. extends", "B. implements", "C. inherits", "D. uses"},
+        {"A. private", "B. protected", "C. default", "D. public"},
+        {"A. const int", "B. final static int", "C. int const", "D. static int"}
+    };
+
+    // Index of the correct option for each question (0=A, 1=B, 2=C, 3=D)
+    answers = new int[] {0, 3, 1}; 
+}
+
+
+
 	// start the game thread
 	public void startGameThread() {
 		gameThread = new Thread(this); //"this" refers to Panel class that implements Runnable
@@ -139,12 +171,54 @@ public class Panel extends JPanel implements Runnable {
                 keyH.enterPressed = false; 
             }
         }
+		if (gameState == quizState) {
+        // Handle quiz logic
+        if (keyH.enterPressed == true) {
+            checkAnswerAndAdvance();
+            keyH.enterPressed = false; // Consume the key press
+        }
+		}
 		if (gameState == pauseState) {
 			//nothing for now
-		}
-
-		
+			}
 	}
+
+	public void checkAnswerAndAdvance() {
+
+	if (currentQuestion >= questions.length) {
+         return;
+    }
+	
+    // Check if the selected option is the correct answer
+    if (quizSelection == answers[currentQuestion]) {
+        correctAnswers++;
+        ui.showMessage("Correct!");
+    } else {
+        ui.showMessage("Incorrect.");
+    }
+
+    // Move to the next question
+    currentQuestion++;
+
+    // Check if the quiz is finished
+    if (currentQuestion >= questions.length) {
+        if (correctAnswers >= passScore) {
+            // Finals Passed
+            ui.gameFinishedPass = true;
+            ui.showMessage("Finals finished! You passed!");
+        } else {
+            // Finals Failed
+            ui.gameFinishedFail = true;
+            ui.showMessage("Finals finished! You failed.");
+        }
+		gameState = playState;
+    } else {
+
+        // Reset selection for the new question
+        quizSelection = 0;
+    }
+}
+
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g); //calls the parent of JPanel class
 		
