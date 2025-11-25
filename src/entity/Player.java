@@ -6,7 +6,6 @@ import java.awt.image.BufferedImage;
 import java.awt.Rectangle;
 
 
-
 import main.KeyHandler;
 
 public class Player extends Entity {
@@ -73,6 +72,9 @@ public class Player extends Entity {
 
 
 	public void update() {
+		
+		collisionOn = false;
+
 		
 		// check if any movement key is pressed (stops character from running in place)
 		if (keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true || keyH.rightPressed == true) {
@@ -165,14 +167,6 @@ public class Player extends Entity {
 			hasCheatSheet++;
 			gp.obj[i] = null; //remove cheat sheet from game world
 			gp.ui.showMessage("Cheat Sheet obtained!");
-			// Log to database immediately
-			if (gp.ui.gameId > 0) {
-				main.GameDataClient.recordCollection(gp.ui.gameId, main.ResourceType.CHEAT_SHEET, 1, "Collected during gameplay");
-			}
-//---------------------------------------------------------------------------
-			//JUST FOR TESTING PURPOSES (delete later)
-			gp.ui.gameFinished = true; //trigger game finish
-//---------------------------------------------------------------------------
 			break;
 
 		case "Pencil":
@@ -190,10 +184,18 @@ public class Player extends Entity {
 		}
 	}
 
-	//TEST
+	
 	public void interactNPC(int i){
 		if (i != 999){
- 		
+			//Dialogue when press  ENTER
+			if(gp.keyH.enterPressed == true){
+			
+			gp.currentNPCIndex = i;
+
+			gp.gameState = gp.dialogueState;
+			gp.npc[i].speak();
+			gp.keyH.enterPressed = false;
+			}	
 		}
 	}
 	public void draw(Graphics2D g2) {

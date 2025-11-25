@@ -7,7 +7,7 @@ import java.awt.event.KeyListener;
 public class KeyHandler implements KeyListener {
 	
 	Panel gp;
-	public boolean upPressed, downPressed, leftPressed, rightPressed;
+	public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed;
 
 
 	//constructor
@@ -26,7 +26,10 @@ public class KeyHandler implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		
 		int code = e.getKeyCode();
-		
+
+		//PLAY STATE
+		if (gp.gameState == gp.playState){
+			
 		if(code == KeyEvent.VK_W) { 
 			upPressed = true; //W key is pressed(up)
 		}
@@ -40,14 +43,47 @@ public class KeyHandler implements KeyListener {
 			rightPressed = true; // D key is pressed(right)
 		}
 		if (code == KeyEvent.VK_P) {
-			if (gp.gameState == gp.playState) {
-				gp.gameState = gp.pauseState; //change to pause state
-			} else if (gp.gameState == gp.pauseState) {
-				gp.gameState = gp.playState; //change to play state
-			}
+			gp.gameState = gp.pauseState; //change to pause state
 		}
-		
+		if (code == KeyEvent.VK_ENTER){
+			enterPressed = true;
+		}	
 	}
+		//PAUSE STATE
+		if (gp.gameState==gp.pauseState){
+			if (code == KeyEvent.VK_P) {
+			gp.gameState = gp.playState; //change to play state
+		}	
+	}
+		//DIALOGUE STATE
+		if (gp.gameState == gp.dialogueState){
+		if (code == KeyEvent.VK_ENTER){
+			enterPressed = true;
+		}
+	}
+
+		//QUIZ STATE
+		if (gp.gameState == gp.quizState){
+    	if (code == KeyEvent.VK_W) { // Move selection Up
+        	gp.quizSelection--;
+        if (gp.quizSelection < 0) {
+            gp.quizSelection = gp.options[gp.currentQuestion].length - 1; // Wrap around
+        }
+    }
+    	if (code == KeyEvent.VK_S) { // Move selection Down
+       		 gp.quizSelection++;
+        if (gp.quizSelection >= gp.options[gp.currentQuestion].length) {
+            gp.quizSelection = 0; // Wrap around
+        }
+    }
+    if (code == KeyEvent.VK_ENTER){
+        enterPressed = true; // Set flag to be handled in Panel update/logic
+    }
+}
+
+
+
+}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
@@ -65,6 +101,9 @@ public class KeyHandler implements KeyListener {
 		}
 		if (code == KeyEvent.VK_D) {
 			rightPressed = false; // D key is released
+		}
+		if (code == KeyEvent.VK_ENTER){
+			enterPressed = false;
 		}
 		
 	}

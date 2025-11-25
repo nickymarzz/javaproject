@@ -12,9 +12,10 @@ public class NPC_Prof extends Entity {
 
         // set default start position and speed
         direction = "down";
-        speed = 2;
+        speed = 1;
 
         getProfImage();
+		setDialogue();
     }
     // load player images
 	public void getProfImage() {
@@ -29,7 +30,18 @@ public class NPC_Prof extends Entity {
 		right2 = setup("/npc/profRight2");
 }
 
-@Override
+public void setDialogue(){
+
+	dialogues[0] = "Hello.";
+	dialogues[1] = "Have you studied for your JAVA \nfinals?";
+	dialogues[2] = "Only the best may get an A+...";
+	dialogues[3] = "Show me what you got!!";
+	
+
+}
+
+
+
 public void setAction(){
 
 	actionCounter++;
@@ -58,5 +70,25 @@ public void setAction(){
 		}
 
 	}	
+
+
+	@Override
+    public void endDialogue() {
+        
+        // This is called by the inherited speak() method after the last line is displayed.
+        
+        //Transition to the Quiz State
+        gp.gameState = gp.quizState;
+        
+        //Reset Quiz Variables
+        gp.currentQuestion = 0; 
+        gp.quizSelection = 0;   
+        gp.correctAnswers = 0;
+        
+        //Reset dialogueIndex
+        dialogueIndex = 0; 
+    }
+
+
 
 }

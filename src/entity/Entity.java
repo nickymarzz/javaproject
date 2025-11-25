@@ -37,14 +37,55 @@ public class Entity { // Base class for all entities(Player, NPC etc) in the gam
 	// default solid area position
 	public int solidAreaDefaultX, solidAreaDefaultY;
 
+	//Dialogue
+	String dialogues[] = new String[20];
+	int dialogueIndex = 0;
+
 	// constructor for Entity class
 	public Entity(Panel gp) {
 		this.gp = gp;
+		solidAreaDefaultX = solidArea.x;
+    	solidAreaDefaultY = solidArea.y;
 	}
 
 
 	public void setAction(){}
+	public void speak(){
+		//prevent null exeption error
+		if (dialogues[dialogueIndex]==null){
+		endDialogue(); 
+        return;
+		}
 
+		//loops dialogue
+		gp.ui.currentDialogue = dialogues[dialogueIndex];
+		dialogueIndex++;
+
+		
+		//make npc face player during dialogue
+		switch(gp.player.direction){
+			case "up":
+				direction = "down";
+				break;
+			case "down":
+				direction = "up";
+				break;
+			case "left":
+				direction = "right";
+				break;
+			case "right":
+				direction = "left";
+				break;
+		}
+	}
+
+	public void endDialogue() {
+        // This is the default ending
+        // It resets the dialogue and triggers the "Game Finished Pass" screen, 
+        dialogueIndex = 0;
+        gp.gameState = gp.playState;
+        gp.ui.gameFinishedPass = true; // Default NPC interaction leads to game end
+    }
 	public void update(){
 
 		setAction();
@@ -52,6 +93,7 @@ public class Entity { // Base class for all entities(Player, NPC etc) in the gam
 		collisionOn = false;
 		gp.cChecker.checkTile(this);
 		gp.cChecker.checkObject(this, false);
+		gp.cChecker.checkPlayer(this);
 	
 
 		if (collisionOn == false) {
