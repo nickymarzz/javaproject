@@ -167,6 +167,10 @@ public class Player extends Entity {
 			hasCheatSheet++;
 			gp.obj[i] = null; //remove cheat sheet from game world
 			gp.ui.showMessage("Cheat Sheet obtained!");
+			// Log to database immediately (match Coffee/Pencil behavior)
+			if (gp.ui.gameId > 0) {
+				main.GameDataClient.recordCollection(gp.ui.gameId, main.ResourceType.CHEAT_SHEET, 1, "Collected during gameplay");
+			}
 			break;
 
 		case "Pencil":
