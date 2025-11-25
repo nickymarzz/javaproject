@@ -22,7 +22,14 @@ public class UI {
     int messageCounter = 0;
 
     //end the game(not implemented yet)
-    public boolean gameFinished = false;
+    public boolean gameFinishedPass = false;
+    public boolean gameFinishedFail = false;
+
+    public String currentDialogue = "";
+
+    //not sure what happened but i added this to fix the error
+    public int gameId;//could not be resolved --> declared variable
+
 
     public UI(Panel gp) {
         this.gp = gp;

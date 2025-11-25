@@ -167,10 +167,6 @@ public class Player extends Entity {
 			hasCheatSheet++;
 			gp.obj[i] = null; //remove cheat sheet from game world
 			gp.ui.showMessage("Cheat Sheet obtained!");
-//---------------------------------------------------------------------------
-			//JUST FOR TESTING PURPOSES (delete later)
-			gp.ui.gameFinished = true; //trigger game finish
-//---------------------------------------------------------------------------
 			break;
 
 		case "Pencil":
