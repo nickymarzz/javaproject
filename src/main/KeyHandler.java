@@ -3,6 +3,7 @@ package main;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+
 //to handle keyboard input
 public class KeyHandler implements KeyListener {
 	
@@ -67,17 +68,57 @@ public class KeyHandler implements KeyListener {
     	if (code == KeyEvent.VK_W) { // Move selection Up
         	gp.quizSelection--;
         if (gp.quizSelection < 0) {
-            gp.quizSelection = gp.options[gp.currentQuestion].length - 1; // Wrap around
+            	gp.quizSelection = gp.options[gp.currentQuestion].length - 1; // Wrap around
+        	}
+    	}
+    	if (code == KeyEvent.VK_S) { // Move selection Down
+       		gp.quizSelection++;
+        if (gp.quizSelection >= gp.options[gp.currentQuestion].length) {
+           		 gp.quizSelection = 0; // Wrap around
+        	}
+    	}
+   		 if (code == KeyEvent.VK_ENTER){
+        	enterPressed = true; // Set flag to be handled in Panel update/logic
+   		 }		
+	}
+		//GAME FINSHED
+		if (gp.ui.gameFinishedPass || gp.ui.gameFinishedFail) {
+    	if (code == KeyEvent.VK_ENTER) {
+        // Reset game variables
+        	gp.resetGame(); 
+        
+        // Change the game state back to the Title Screen
+        	gp.gameState = gp.titleState; 
+			
+			return;
+    }
+}
+
+		//TITLE STATE
+		if (gp.gameState == gp.titleState){
+    	if (code == KeyEvent.VK_W) { // Move selection Up
+        	gp.ui.commandNum--;
+        if (gp.ui.commandNum < 0) {
+            gp.ui.commandNum = 1; // Wrap around
         }
     }
     	if (code == KeyEvent.VK_S) { // Move selection Down
-       		 gp.quizSelection++;
-        if (gp.quizSelection >= gp.options[gp.currentQuestion].length) {
-            gp.quizSelection = 0; // Wrap around
+       		 gp.ui.commandNum++;
+        if (gp.ui.commandNum > 1) {
+            gp.ui.commandNum = 0; // Wrap around
         }
     }
     if (code == KeyEvent.VK_ENTER){
-        enterPressed = true; // Set flag to be handled in Panel update/logic
+		if (gp.ui.commandNum == 0){
+			gp.gameState = gp.playState;
+			if (gp.gameThread == null) {
+                gp.startGameThread(); 
+            }
+		}
+		if (gp.ui.commandNum == 1){
+			System.exit(0);
+		}
+        
     }
 }
 
