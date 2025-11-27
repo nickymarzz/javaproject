@@ -24,14 +24,7 @@ public class Main {
 		mainPanel.ui.setGameId(gameId);
 		
 		// Add a WindowListener to handle closing the game session
-		window.addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                GameDataClient.closeGameSession(gameId); // Close the game session in the database
-                window.dispose(); // Dispose of the window resources
-                System.exit(0); // Terminate the application
-            }
-        });
+		window.addWindowListener(new MyWindowCloser(gameId, window));
 		
 		mainPanel.setupGame(); // setup game objects
 		mainPanel.startGameThread(); // start the game loop
