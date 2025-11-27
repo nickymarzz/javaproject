@@ -12,7 +12,7 @@ import object.Pencil;
 public class UI {
 
     Panel gp;
-    Font arial_40, arial_80B;    
+    Font arial_40, arial_80B, sanserif_30;    
     BufferedImage coffeeImage;
     BufferedImage cheatSheetImage;
     BufferedImage pencilImage;
@@ -21,11 +21,14 @@ public class UI {
     public String message = "";
     int messageCounter = 0;
 
-    //end the game(not implemented yet)
+    //end the game
     public boolean gameFinishedPass = false;
     public boolean gameFinishedFail = false;
 
     public String currentDialogue = "";
+
+    public int commandNum = 0;
+
 
     //not sure what happened but i added this to fix the error
     public int gameId;//could not be resolved --> declared variable
@@ -36,6 +39,7 @@ public class UI {
 
         arial_40 = new Font("Arial", Font.PLAIN, 40);
         arial_80B = new Font("Arial", Font.BOLD, 80);
+        sanserif_30 = new Font("Serif", Font.PLAIN,30);
        
 
         //load item images
@@ -67,13 +71,17 @@ public class UI {
         g2.setFont(arial_40);
         g2.setColor(Color.white);
 
-       if (!(gameFinishedPass == true || gameFinishedFail == true)) {
-        drawPlayScreen();
+          //TITLE
+        if (gp.gameState == gp.titleState){
+            drawTitleScreen();
         }
+
+       if (gameFinishedPass == false && gameFinishedFail == false) {
         
         //PLAY 
         if (gp.gameState == gp.playState) {
           //nothing
+          drawPlayScreen();
         }
         //PAUSE
         if (gp.gameState == gp.pauseState) {
@@ -82,13 +90,17 @@ public class UI {
         //DIALOGUE
         if (gp.gameState == gp.dialogueState){
             drawDialogueScreen();
+            drawPlayScreen();
         }
         
         // QUIZ STATE
         if (gp.gameState == gp.quizState) {
             drawQuizScreen();
+            if (gameFinishedPass == false|| gameFinishedFail==true) {
+            drawPlayScreen();
+            }
         }
-
+    }
         //GAME FINISH SCREEN
         if (gameFinishedPass == true|| gameFinishedFail==true) {
 
@@ -153,7 +165,7 @@ public class UI {
         // stop the game thread
         gp.gameThread = null;
         }
-        else{
+        else if (gp.gameState != gp.titleState){
          //INVENTORY DISPLAY
         g2.setFont(arial_40);
         g2.setColor(Color.white);
@@ -183,6 +195,76 @@ public class UI {
        
         }
         }
+    }
+
+    //DRAW TITLE SCREEN
+
+    public void drawTitleScreen(){
+
+        //BACKGROUND
+        g2.setColor(Color.black);
+        g2.fillRect(0,0,gp.screenWidth,gp.screenHeight);
+
+        //TEXT
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD,45f));
+        String text = "SEJONG STUDENT SIMULATOR";
+        int x = getXforCenteredText(text);
+        int y = gp.tileSize*3;
+
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD,45f));
+        String text2 = "JAVA";
+        int x2 = gp.tileSize*4+25;
+        int y2 = gp.tileSize*5;
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD,45f));
+        String text3 = "EDITION";
+        int x3 = gp.tileSize*8-15;
+        int y3 = gp.tileSize*5;
+
+        //SHADOW
+        g2.setColor(new Color(60,0,0));
+        g2.drawString(text, x+5, y+5);
+
+        g2.setColor(new Color(83,130,161));
+        g2.drawString(text2, x2+5, y2+5);
+
+         g2.setColor(new Color(237,29,37));
+        g2.drawString(text3, x3+5, y3+5);
+        
+        //MAIN COLOR AND DRAW
+        g2.setColor(new Color(153,0,0));
+        g2.drawString(text, x, y);
+
+        g2.setColor(Color.white);
+        g2.drawString(text2, x2, y2);
+
+        g2.setColor(Color.white);
+        g2.drawString(text3, x3, y3);
+
+
+        //MENU
+        g2.setFont(sanserif_30);
+
+        text = "NEW GAME";
+        x = getXforCenteredText(text);
+        y += gp.tileSize*5;
+        g2.drawString(text, x, y);
+        if (commandNum == 0){
+            g2.drawString(">",x-gp.tileSize,y);
+        }
+
+        text = "EXIT";
+        x = getXforCenteredText(text);
+        y += gp.tileSize;
+        g2.drawString(text, x, y);
+         if (commandNum == 1){
+            g2.drawString(">",x-gp.tileSize,y);
+        }
+
+
+
+
     }
     //DRAW PAUSE SCREEN
     public void drawPauseScreen() {

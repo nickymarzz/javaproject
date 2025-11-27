@@ -46,7 +46,7 @@ public void setAction(){
 
 	actionCounter++;
 
-	//move every 120seconds
+	//move every 120 frames
 	if(actionCounter == 120){
 
 	Random random = new Random();
