@@ -63,6 +63,7 @@ public class Panel extends JPanel implements Runnable {
 
 	//GAME STATE
 	public int gameState;
+	public final int titleState = 0;
 	public final int playState = 1;
 	public final int pauseState = 2;
 	public final int dialogueState = 3;
@@ -89,7 +90,7 @@ public class Panel extends JPanel implements Runnable {
 		aSetter.setObject(); //place objects in the game world
 		aSetter.setNPC(); //place NPCs in the game world
 
-		gameState = playState; //start game in play state
+		gameState = titleState; //start game in play state
 
 	}
 
@@ -109,6 +110,29 @@ public class Panel extends JPanel implements Runnable {
 
     // Index of the correct option for each question (0=A, 1=B, 2=C, 3=D)
     answers = new int[] {0, 3, 1}; 
+}
+
+	public void resetGame() {
+    ui.gameFinishedPass = false;
+    ui.gameFinishedFail = false;
+    
+    currentQuestion = 0;
+    quizSelection = 0;
+    correctAnswers = 0;
+    
+    ui.commandNum = 0;
+    
+    player.hasCoffee = 0;
+    player.hasCheatSheet = 0;
+    player.hasPencil = 0;
+    
+
+    player.setDefaultValues();
+    setupGame();
+    
+    if (gameThread == null) {
+        startGameThread();
+    }
 }
 
 
@@ -225,7 +249,14 @@ public class Panel extends JPanel implements Runnable {
 		//Graphics2D extends Graphics class-> more control over graphics
 		Graphics2D g2 = (Graphics2D) g;
 		
-		//tile
+
+		//TITLE SCREEN
+		if (gameState == titleState){
+			ui.draw(g2);
+
+		}
+		else {
+			//tile
 		tileM.draw(g2); //draw tiles first (background)
 
 		//objects
@@ -249,6 +280,8 @@ public class Panel extends JPanel implements Runnable {
 		ui.draw(g2); //draw user interface (top most)
 		
 		g2.dispose(); //free() but for like window,graphics,etc not memory 
+		}
+		
 	}
 	
 
