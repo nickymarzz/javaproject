@@ -225,15 +225,23 @@ public class Panel extends JPanel implements Runnable {
     currentQuestion++;
 
     // Check if the quiz is finished
-    if (currentQuestion >= questions.length) {
+		if (currentQuestion >= questions.length) {
         if (correctAnswers >= passScore) {
             // Finals Passed
             ui.gameFinishedPass = true;
             ui.showMessage("Finals finished! You passed!");
+				// Record quiz results in DB (pass)
+				if (ui.gameId > 0) {
+					GameDataClient.recordQuizResult(ui.gameId, correctAnswers, true);
+				}
         } else {
             // Finals Failed
             ui.gameFinishedFail = true;
             ui.showMessage("Finals finished! You failed.");
+				// Record quiz results in DB (failed)
+				if (ui.gameId > 0) {
+					GameDataClient.recordQuizResult(ui.gameId, correctAnswers, false);
+				}
         }
 		gameState = playState;
     } else {
