@@ -68,7 +68,6 @@ public class Panel extends JPanel implements Runnable {
 	public final int pauseState = 2;
 	public final int dialogueState = 3;
 	public final int quizState = 4;
-	public int gameId = -1; // To store the current game session ID from game_sessions
 
 	// panel constructor
 	public Panel() {

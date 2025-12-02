@@ -68,17 +68,8 @@ ALTER TABLE game_resources
 ADD COLUMN total_marks INTEGER NOT NULL DEFAULT 0,
 ADD COLUMN passing_state BOOLEAN NOT NULL DEFAULT FALSE;
 
-CREATE TABLE game_sessions (                                                                                                
-	game_id INT AUTO_INCREMENT PRIMARY KEY,                                                     
-    start_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    end_time TIMESTAMP NULL                                                                                                 
- ); 
-
-
 select * from game_resources;
 
 select * from games;
 
 select * from collection_events;
-
-select * from game_sessions;
