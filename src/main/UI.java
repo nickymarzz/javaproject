@@ -86,6 +86,7 @@ public class UI {
         //PAUSE
         if (gp.gameState == gp.pauseState) {
             drawPauseScreen();
+            drawPlayScreen();
         }
         //DIALOGUE
         if (gp.gameState == gp.dialogueState){
