@@ -7,6 +7,9 @@ CREATE TABLE games (
     start_time     DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     end_time       DATETIME NULL,
     description    VARCHAR(255),
+    cheat_sheet_qty INT NOT NULL DEFAULT 0,
+    pencil_qty      INT NOT NULL DEFAULT 0,
+    coffee_qty      INT NOT NULL DEFAULT 0,
     UNIQUE KEY uq_game_name (game_name)
 );
 
