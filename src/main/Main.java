@@ -18,13 +18,16 @@ public class Main {
 		window.setLocationRelativeTo(null); // center window on screen
 		window.setVisible(true);
 		
-		// Create a new game session with a unique name based on timestamp
-		String sessionName = "Game Session - " + System.currentTimeMillis();
-		int gameId = GameDataClient.createGameSession(sessionName, "Player completed finals");
-		mainPanel.ui.setGameId(gameId);
+		// The game-specific session in the 'games' table will now only be created
+		// when the user explicitly selects "NEW GAME" from the title screen,
+		// to avoid creating entries that might skip numbering if the user exits immediately.
+		// String sessionName = "Game Session - " + System.currentTimeMillis();
+		// int gameId = GameDataClient.createGameSession(sessionName, "Player started the application");
+		// mainPanel.ui.setGameId(gameId);
 		
-		// Add a WindowListener to handle closing the game session
-		window.addWindowListener(new MyWindowCloser(gameId, window));
+		// Add a WindowListener to handle closing the game-specific session
+		// MyWindowCloser is designed to handle cases where gp.ui.gameId is -1 (no game started yet).
+		window.addWindowListener(new MyWindowCloser(mainPanel, window)); 
 		
 		mainPanel.setupGame(); // setup game objects
 		mainPanel.startGameThread(); // start the game loop
