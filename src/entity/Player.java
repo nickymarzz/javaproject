@@ -45,8 +45,8 @@ public class Player extends Entity {
 		getPlayerImage();
 	}
 	public void setDefaultValues() {
-		worldX = gp.tileSize * 40; // starting position in the world
-		worldY = gp.tileSize * 40;
+		worldX = gp.tileSize * 25; // starting position in the world
+		worldY = gp.tileSize * 25;
 		speed = 4;
 		direction = "down"; // default direction
 		
@@ -72,13 +72,13 @@ public class Player extends Entity {
 
 
 	public void update() {
-		
-		collisionOn = false;
 
-		
+		if (gp.gameState != gp.playState) {
+        return; 
+    }
+	
 		// check if any movement key is pressed (stops character from running in place)
 		if (keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true || keyH.rightPressed == true) {
-
 
 			// player movement
 			if(keyH.upPressed == true) {

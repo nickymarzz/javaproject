@@ -45,26 +45,32 @@ public class KeyHandler implements KeyListener {
 		}
 		if (code == KeyEvent.VK_P) {
 			gp.gameState = gp.pauseState; //change to pause state
+			
+			//reset movement input to prevent unintended input on unpause
+			upPressed = false;
+        	downPressed = false;
+        	leftPressed = false;
+       		rightPressed = false;
 		}
 		if (code == KeyEvent.VK_ENTER){
 			enterPressed = true;
 		}	
 	}
 		//PAUSE STATE
-		if (gp.gameState==gp.pauseState){
+		else if (gp.gameState==gp.pauseState){
 			if (code == KeyEvent.VK_P) {
 			gp.gameState = gp.playState; //change to play state
 		}	
 	}
 		//DIALOGUE STATE
-		if (gp.gameState == gp.dialogueState){
+		else if (gp.gameState == gp.dialogueState){
 		if (code == KeyEvent.VK_ENTER){
 			enterPressed = true;
 		}
 	}
 
 		//QUIZ STATE
-		if (gp.gameState == gp.quizState){
+		else if (gp.gameState == gp.quizState){
     	if (code == KeyEvent.VK_W) { // Move selection Up
         	gp.quizSelection--;
         if (gp.quizSelection < 0) {
@@ -77,7 +83,7 @@ public class KeyHandler implements KeyListener {
            		 gp.quizSelection = 0; // Wrap around
         	}
     	}
-   		 if (code == KeyEvent.VK_ENTER){
+   		if (code == KeyEvent.VK_ENTER){
         	enterPressed = true; // Set flag to be handled in Panel update/logic
    		 }		
 	}
@@ -89,7 +95,7 @@ public class KeyHandler implements KeyListener {
         
         // Change the game state back to the Title Screen
         	gp.gameState = gp.titleState; 
-			
+			 enterPressed = false;
 			return;
     }
 }

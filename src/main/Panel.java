@@ -172,6 +172,8 @@ public class Panel extends JPanel implements Runnable {
 	}
 	
 	public void update() {
+		
+
 		if (gameState == playState) {
 			//update player
 			player.update();
@@ -183,7 +185,12 @@ public class Panel extends JPanel implements Runnable {
 				}
 			}
 		}
-		if (gameState == dialogueState) {
+		else if (gameState == pauseState) {
+			
+		//game engine does nothing 
+		}
+					
+		else if (gameState == dialogueState) {
             if (keyH.enterPressed == true) {
                 
                 // Advance the dialogue line for the current NPC
@@ -195,18 +202,14 @@ public class Panel extends JPanel implements Runnable {
                 keyH.enterPressed = false; 
             }
         }
-		if (gameState == quizState) {
+		else if (gameState == quizState) {
         // Handle quiz logic
         if (keyH.enterPressed == true) {
             checkAnswerAndAdvance();
             keyH.enterPressed = false; // Consume the key press
         }
 		}
-		if (gameState == pauseState) {
-			//nothing for now
-			}
 	}
-
 	public void checkAnswerAndAdvance() {
 
 	if (currentQuestion >= questions.length) {
@@ -229,7 +232,7 @@ public class Panel extends JPanel implements Runnable {
         if (correctAnswers >= passScore) {
             // Finals Passed
             ui.gameFinishedPass = true;
-            ui.showMessage("Finals finished! You passed!");
+            ui.showMessage(" "); //to reset ui
 				// Record quiz results in DB (pass)
 				if (ui.gameId > 0) {
 					GameDataClient.recordQuizResult(ui.gameId, correctAnswers, true);
@@ -237,7 +240,7 @@ public class Panel extends JPanel implements Runnable {
         } else {
             // Finals Failed
             ui.gameFinishedFail = true;
-            ui.showMessage("Finals finished! You failed.");
+            ui.showMessage(" "); //to reset ui
 				// Record quiz results in DB (failed)
 				if (ui.gameId > 0) {
 					GameDataClient.recordQuizResult(ui.gameId, correctAnswers, false);
