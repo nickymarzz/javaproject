@@ -1,105 +1,72 @@
--- Create database
 CREATE DATABASE IF NOT EXISTS game_resources;
 USE game_resources;
 
--------------------------------------------------------
--- 1. GAMES TABLE
--------------------------------------------------------
 CREATE TABLE games (
-    game_id INT AUTO_INCREMENT PRIMARY KEY,
-    game_name VARCHAR(100) NOT NULL,
-    start_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    end_time DATETIME NULL,
-    description VARCHAR(255),
-    total_marks INT DEFAULT 0,
-    passing_state VARCHAR(16) DEFAULT 'failed',
+    game_id        INT AUTO_INCREMENT PRIMARY KEY,
+    game_name      VARCHAR(100) NOT NULL,
+    start_time     DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    end_time       DATETIME NULL,
+    description    VARCHAR(255),
     UNIQUE KEY uq_game_name (game_name)
 );
 
--------------------------------------------------------
--- 2. GAME RESOURCES TABLE
--------------------------------------------------------
 CREATE TABLE game_resources (
-    game_id INT PRIMARY KEY,
+    game_id        INT PRIMARY KEY,
     cheat_sheet_qty INT NOT NULL DEFAULT 0,
-    pencil_qty INT NOT NULL DEFAULT 0,
-    coffee_qty INT NOT NULL DEFAULT 0,
-    total_marks INT NOT NULL DEFAULT 0,
-    passing_state BOOLEAN NOT NULL DEFAULT FALSE,
-    CONSTRAINT fk_gr_game FOREIGN KEY (game_id)
-        REFERENCES games(game_id)
+    pencil_qty      INT NOT NULL DEFAULT 0,
+    coffee_qty      INT NOT NULL DEFAULT 0,
+    CONSTRAINT fk_gr_game
+        FOREIGN KEY (game_id) REFERENCES games(game_id)
         ON DELETE CASCADE
 );
 
--------------------------------------------------------
--- 3. COLLECTION EVENTS TABLE
--------------------------------------------------------
 CREATE TABLE collection_events (
-    event_id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    game_id INT NOT NULL,
-    resource_type ENUM('CHEAT_SHEET','PENCIL','COFFEE') NOT NULL,
-    quantity INT NOT NULL CHECK (quantity > 0),
-    collected_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    notes VARCHAR(255),
-    CONSTRAINT fk_events_game FOREIGN KEY (game_id)
-        REFERENCES games(game_id)
+    event_id       BIGINT AUTO_INCREMENT PRIMARY KEY,
+    game_id        INT NOT NULL,
+    resource_type  ENUM('CHEAT_SHEET','PENCIL','COFFEE') NOT NULL,
+    quantity       INT NOT NULL CHECK (quantity > 0),
+    collected_at   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    notes          VARCHAR(255),
+    CONSTRAINT fk_events_game
+        FOREIGN KEY (game_id) REFERENCES games(game_id)
         ON DELETE CASCADE,
     INDEX idx_events_game_time (game_id, collected_at)
 );
 
--------------------------------------------------------
--- 4. TRIGGER (CLEAN, CONCISE, SAFE)
--------------------------------------------------------
 DELIMITER //
 CREATE TRIGGER trg_collection_event_after_insert
 AFTER INSERT ON collection_events
 FOR EACH ROW
 BEGIN
-    -- Update game_resources table
     INSERT INTO game_resources (game_id)
     VALUES (NEW.game_id)
     ON DUPLICATE KEY UPDATE game_id = game_id;
 
     CASE NEW.resource_type
         WHEN 'CHEAT_SHEET' THEN
-            UPDATE game_resources
-            SET cheat_sheet_qty = cheat_sheet_qty + NEW.quantity
-            WHERE game_id = NEW.game_id;
-
-            UPDATE games
-            SET cheat_sheet_qty = cheat_sheet_qty + NEW.quantity
+            UPDATE game_resources SET cheat_sheet_qty = cheat_sheet_qty + NEW.quantity
             WHERE game_id = NEW.game_id;
         WHEN 'PENCIL' THEN
-            UPDATE game_resources
-            SET pencil_qty = pencil_qty + NEW.quantity
-            WHERE game_id = NEW.game_id;
-
-            UPDATE games
-            SET pencil_qty = pencil_qty + NEW.quantity
+            UPDATE game_resources SET pencil_qty = pencil_qty + NEW.quantity
             WHERE game_id = NEW.game_id;
         WHEN 'COFFEE' THEN
-            UPDATE game_resources
-            SET coffee_qty = coffee_qty + NEW.quantity
-            WHERE game_id = NEW.game_id;
-
-            UPDATE games
-            SET coffee_qty = coffee_qty + NEW.quantity
+            UPDATE game_resources SET coffee_qty = coffee_qty + NEW.quantity
             WHERE game_id = NEW.game_id;
     END CASE;
-END //
+END;
+//
 DELIMITER ;
 
-
 ALTER TABLE games
-    ADD COLUMN cheat_sheet_qty INT NOT NULL DEFAULT 0,
-    ADD COLUMN pencil_qty INT NOT NULL DEFAULT 0,
-    ADD COLUMN coffee_qty INT NOT NULL DEFAULT 0;
-    
--------------------------------------------------------
--- 5. View All Data Together
--------------------------------------------------------
-SELECT g.game_id, g.game_name,
-       r.cheat_sheet_qty, r.pencil_qty, r.coffee_qty,
-       r.total_marks, r.passing_state
-FROM games g
-LEFT JOIN game_resources r ON g.game_id = r.game_id;
+  ADD COLUMN total_marks INT DEFAULT 0,
+  ADD COLUMN passing_state VARCHAR(16) DEFAULT 'failed';
+
+ALTER TABLE game_resources
+ADD COLUMN total_marks INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN passing_state BOOLEAN NOT NULL DEFAULT FALSE;
+
+select * from game_resources;
+
+select * from games;
+
+select * from collection_events;
