@@ -55,23 +55,34 @@ CREATE TRIGGER trg_collection_event_after_insert
 AFTER INSERT ON collection_events
 FOR EACH ROW
 BEGIN
-    -- Ensure a row exists in game_resources
+    -- Update game_resources table
     INSERT INTO game_resources (game_id)
     VALUES (NEW.game_id)
     ON DUPLICATE KEY UPDATE game_id = game_id;
 
-    -- Update the correct resource
     CASE NEW.resource_type
         WHEN 'CHEAT_SHEET' THEN
             UPDATE game_resources
+            SET cheat_sheet_qty = cheat_sheet_qty + NEW.quantity
+            WHERE game_id = NEW.game_id;
+
+            UPDATE games
             SET cheat_sheet_qty = cheat_sheet_qty + NEW.quantity
             WHERE game_id = NEW.game_id;
         WHEN 'PENCIL' THEN
             UPDATE game_resources
             SET pencil_qty = pencil_qty + NEW.quantity
             WHERE game_id = NEW.game_id;
+
+            UPDATE games
+            SET pencil_qty = pencil_qty + NEW.quantity
+            WHERE game_id = NEW.game_id;
         WHEN 'COFFEE' THEN
             UPDATE game_resources
+            SET coffee_qty = coffee_qty + NEW.quantity
+            WHERE game_id = NEW.game_id;
+
+            UPDATE games
             SET coffee_qty = coffee_qty + NEW.quantity
             WHERE game_id = NEW.game_id;
     END CASE;
@@ -79,6 +90,11 @@ END //
 DELIMITER ;
 
 
+ALTER TABLE games
+    ADD COLUMN cheat_sheet_qty INT NOT NULL DEFAULT 0,
+    ADD COLUMN pencil_qty INT NOT NULL DEFAULT 0,
+    ADD COLUMN coffee_qty INT NOT NULL DEFAULT 0;
+    
 -------------------------------------------------------
 -- 5. View All Data Together
 -------------------------------------------------------
