@@ -2,6 +2,7 @@ package main;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.sql.SQLException; // Added import
 
 
 //to handle keyboard input
@@ -115,13 +116,61 @@ public class KeyHandler implements KeyListener {
         }
     }
     if (code == KeyEvent.VK_ENTER){
-		if (gp.ui.commandNum == 0){
+		if (gp.ui.commandNum == 0){ // NEW GAME
+			// Close previous overall game session (game_sessions table) if active
+            if (gp.gameId != -1) {
+                try {
+                    DatabaseManager.updateEndTime(gp.gameId);
+                    System.out.println("Previous overall game session " + gp.gameId + " ended.");
+                } catch (SQLException ex) {
+                    System.err.println("Error updating end time for previous overall game session: " + ex.getMessage());
+                    ex.printStackTrace();
+                }
+            }
+            
+            // Close previous game-specific session ('games' table) if active
+            if (gp.ui.gameId != -1) {
+                GameDataClient.closeGameSession(gp.ui.gameId);
+                System.out.println("Previous game-specific session " + gp.ui.gameId + " ended.");
+            }
+
+            // Create a new overall game session (game_sessions table)
+            try {
+                gp.gameId = DatabaseManager.createGameSession();
+                System.out.println("New overall game session started with ID: " + gp.gameId);
+            } catch (SQLException ex) {
+                System.err.println("Error creating overall game session: " + ex.getMessage());
+                ex.printStackTrace();
+            }
+
+            // Create a corresponding entry in the 'games' table via GameDataClient
+            String sessionName = "Game Session (Overall ID: " + gp.gameId + ") - " + System.currentTimeMillis();
+            int newGameSpecificId = GameDataClient.createGameSession(sessionName, "Player started a new game");
+            gp.ui.setGameId(newGameSpecificId); // This gameId is for the 'games' table
+            System.out.println("New game-specific session started with ID: " + gp.ui.gameId);
+
 			gp.gameState = gp.playState;
 			if (gp.gameThread == null) {
                 gp.startGameThread(); 
             }
 		}
-		if (gp.ui.commandNum == 1){
+		if (gp.ui.commandNum == 1){ // EXIT
+			// Close current overall game session (game_sessions table) if active
+            if (gp.gameId != -1) {
+                try {
+                    DatabaseManager.updateEndTime(gp.gameId);
+                    System.out.println("Overall game session " + gp.gameId + " ended.");
+                } catch (SQLException ex) {
+                    System.err.println("Error updating end time for overall game session: " + ex.getMessage());
+                    ex.printStackTrace();
+                }
+            }
+
+            // Close current game-specific session ('games' table) if active
+            if (gp.ui.gameId != -1) {
+                GameDataClient.closeGameSession(gp.ui.gameId);
+                System.out.println("Game-specific session " + gp.ui.gameId + " ended.");
+            }
 			System.exit(0);
 		}
         
