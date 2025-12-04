@@ -1,84 +1,102 @@
+-- Create the database if it doesn't already exist
 CREATE DATABASE IF NOT EXISTS game_resources;
+
+-- Use the game_resources database for subsequent operations
 USE game_resources;
 
+-- Table to store information about individual game sessions
 CREATE TABLE games (
-    game_id        INT AUTO_INCREMENT PRIMARY KEY,
-    game_name      VARCHAR(100) NOT NULL,
-    start_time     DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    end_time       DATETIME NULL,
-    description    VARCHAR(255),
-    cheat_sheet_qty INT NOT NULL DEFAULT 0,
-    pencil_qty      INT NOT NULL DEFAULT 0,
-    coffee_qty      INT NOT NULL DEFAULT 0,
-    UNIQUE KEY uq_game_name (game_name)
+    game_id         INT AUTO_INCREMENT PRIMARY KEY,          -- Unique identifier for each game
+    game_name       VARCHAR(100) NOT NULL,                   -- Name of the game
+    start_time      DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, -- Timestamp when the game started
+    end_time        DATETIME NULL,                           -- Timestamp when the game ended (can be null if ongoing)
+    description     VARCHAR(255),                            -- Optional description of the game
+    cheat_sheet_qty INT NOT NULL DEFAULT 0,                  -- Quantity of 'cheat sheets' resource in this game
+    pencil_qty      INT NOT NULL DEFAULT 0,                  -- Quantity of 'pencils' resource in this game
+    coffee_qty      INT NOT NULL DEFAULT 0,                  -- Quantity of 'coffee' resource in this game
+    UNIQUE KEY uq_game_name (game_name)                      -- Ensures game names are unique
 );
 
+-- Table to store current resource quantities for each game
 CREATE TABLE game_resources (
-    game_id        INT PRIMARY KEY,
-    cheat_sheet_qty INT NOT NULL DEFAULT 0,
-    pencil_qty      INT NOT NULL DEFAULT 0,
-    coffee_qty      INT NOT NULL DEFAULT 0,
-    CONSTRAINT fk_gr_game
+    game_id         INT PRIMARY KEY,                         -- Foreign key referencing the games table
+    cheat_sheet_qty INT NOT NULL DEFAULT 0,                  -- Current quantity of cheat sheets
+    pencil_qty      INT NOT NULL DEFAULT 0,                  -- Current quantity of pencils
+    coffee_qty      INT NOT NULL DEFAULT 0,                  -- Current quantity of coffee
+    CONSTRAINT fk_gr_game                                    -- Foreign key constraint
         FOREIGN KEY (game_id) REFERENCES games(game_id)
-        ON DELETE CASCADE
+        ON DELETE CASCADE                                -- If a game is deleted, its resources are also deleted
 );
 
+-- Table to log individual collection events for resources
 CREATE TABLE collection_events (
-    event_id       BIGINT AUTO_INCREMENT PRIMARY KEY,
-    game_id        INT NOT NULL,
-    resource_type  ENUM('CHEAT_SHEET','PENCIL','COFFEE') NOT NULL,
-    quantity       INT NOT NULL CHECK (quantity > 0),
-    collected_at   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    notes          VARCHAR(255),
-    CONSTRAINT fk_events_game
+    event_id        BIGINT AUTO_INCREMENT PRIMARY KEY,       -- Unique identifier for each collection event
+    game_id         INT NOT NULL,                            -- Foreign key referencing the games table
+    resource_type   ENUM('CHEAT_SHEET','PENCIL','COFFEE') NOT NULL, -- Type of resource collected
+    quantity        INT NOT NULL CHECK (quantity > 0),       -- Quantity of resource collected in this event
+    collected_at    DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, -- Timestamp of the collection event
+    notes           VARCHAR(255),                            -- Optional notes about the event
+    CONSTRAINT fk_events_game                                -- Foreign key constraint
         FOREIGN KEY (game_id) REFERENCES games(game_id)
-        ON DELETE CASCADE,
-    INDEX idx_events_game_time (game_id, collected_at)
+        ON DELETE CASCADE,                                   -- If a game is deleted, its events are also deleted
+    INDEX idx_events_game_time (game_id, collected_at)       -- Index for efficient lookup by game and time
 );
 
+-- Trigger to update game_resources table after an insert into collection_events
 DELIMITER //
 CREATE TRIGGER trg_collection_event_after_insert
 AFTER INSERT ON collection_events
 FOR EACH ROW
 BEGIN
+    -- Ensure an entry exists in game_resources for the new game_id
     INSERT INTO game_resources (game_id)
     VALUES (NEW.game_id)
-    ON DUPLICATE KEY UPDATE game_id = game_id;
+    ON DUPLICATE KEY UPDATE game_id = game_id; -- No-op if already exists
 
+    -- Update the resource quantity based on the type of resource collected
     CASE NEW.resource_type
         WHEN 'CHEAT_SHEET' THEN
-            UPDATE game_resources SET cheat_sheet_qty = cheat_sheet_qty + NEW.quantity
+            UPDATE game_resources
+            SET cheat_sheet_qty = cheat_sheet_qty + NEW.quantity
             WHERE game_id = NEW.game_id;
         WHEN 'PENCIL' THEN
-            UPDATE game_resources SET pencil_qty = pencil_qty + NEW.quantity
+            UPDATE game_resources
+            SET pencil_qty = pencil_qty + NEW.quantity
             WHERE game_id = NEW.game_id;
         WHEN 'COFFEE' THEN
-            UPDATE game_resources SET coffee_qty = coffee_qty + NEW.quantity
+            UPDATE game_resources
+            SET coffee_qty = coffee_qty + NEW.quantity
             WHERE game_id = NEW.game_id;
     END CASE;
 END;
 //
 DELIMITER ;
 
+-- Alter the 'games' table to add 'total_marks' and 'passing_state' columns
 ALTER TABLE games
-  ADD COLUMN total_marks INT DEFAULT 0,
-  ADD COLUMN passing_state VARCHAR(16) DEFAULT 'failed';
+    ADD COLUMN total_marks INT DEFAULT 0,
+    ADD COLUMN passing_state VARCHAR(16) DEFAULT 'failed';
 
+-- Alter the 'game_resources' table to add 'total_marks' and 'passing_state' columns
 ALTER TABLE game_resources
-ADD COLUMN total_marks INTEGER NOT NULL DEFAULT 0,
-ADD COLUMN passing_state BOOLEAN NOT NULL DEFAULT FALSE;
+    ADD COLUMN total_marks INTEGER NOT NULL DEFAULT 0,
+    ADD COLUMN passing_state BOOLEAN NOT NULL DEFAULT FALSE;
 
-CREATE TABLE game_sessions (                                                                                                
-	game_id INT AUTO_INCREMENT PRIMARY KEY,                                                     
-    start_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    end_time TIMESTAMP NULL                                                                                                 
- ); 
+-- Table to store individual game sessions details
+CREATE TABLE game_sessions (
+    game_id     INT AUTO_INCREMENT PRIMARY KEY,          -- Unique identifier for each game session
+    start_time  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,     -- Timestamp when the game session started
+    end_time    TIMESTAMP NULL                           -- Timestamp when the game session ended (can be null if ongoing)
+);
 
+-- Select all records from game_resources table
+SELECT * FROM game_resources;
 
-select * from game_resources;
+-- Select all records from games table
+SELECT * FROM games;
 
-select * from games;
+-- Select all records from collection_events table
+SELECT * FROM collection_events;
 
-select * from collection_events;
-
-select * from game_sessions;
+-- Select all records from game_sessions table
+SELECT * FROM game_sessions;
