@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Security issue reporting
+    url: https://example.com/security-report
+    about: Do not file public issues for security vulnerabilities. Replace this placeholder address with the maintainer's real contact.
