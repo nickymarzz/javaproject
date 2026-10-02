@@ -1,4 +1,4 @@
-package main;
+package com.sejong.simulator.main;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;

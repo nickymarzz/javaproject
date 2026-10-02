@@ -1,6 +1,6 @@
-package main;
+package com.sejong.simulator.main;
 
-import entity.Entity;
+import com.sejong.simulator.entity.Entity;
 
 public class CollisionChecker {
 

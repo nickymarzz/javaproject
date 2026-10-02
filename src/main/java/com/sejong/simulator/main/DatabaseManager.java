@@ -1,4 +1,4 @@
-package main;
+package com.sejong.simulator.main;
 
 import java.io.IOException;
 import java.io.InputStream;

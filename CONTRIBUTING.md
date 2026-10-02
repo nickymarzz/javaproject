@@ -18,7 +18,7 @@ Thank you for your interest in contributing to this project.
 javac -sourcepath src -d bin src/main/*.java src/entity/*.java src/object/*.java src/tile/*.java src/module-info.java
 ```
 
-4. Run the game:
+1. Run the game:
 
 ```bash
 java -cp "bin;res;lib/*" main.Main

@@ -1,4 +1,4 @@
-package entity;
+package com.sejong.simulator.entity;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -7,8 +7,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import main.Panel;
-import main.UtilityTool;
+import com.sejong.simulator.main.Panel;
+import com.sejong.simulator.main.UtilityTool;
 
 
 public class Entity { // Base class for all entities(Player, NPC etc) in the game

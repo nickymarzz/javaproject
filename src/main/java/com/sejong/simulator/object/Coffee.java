@@ -1,6 +1,6 @@
-package object;
+package com.sejong.simulator.object;
 
-import main.Panel;
+import com.sejong.simulator.main.Panel;
 
 
 public class Coffee extends ParentObject {

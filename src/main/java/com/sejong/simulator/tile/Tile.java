@@ -1,4 +1,4 @@
-package tile;
+package com.sejong.simulator.tile;
 
 import java.awt.image.BufferedImage;
 

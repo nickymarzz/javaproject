@@ -1,10 +1,10 @@
-package object;
+package com.sejong.simulator.object;
 
 import java.awt.image.BufferedImage;
 import java.awt.Rectangle;
 
-import main.Panel;
-import main.UtilityTool;
+import com.sejong.simulator.main.Panel;
+import com.sejong.simulator.main.UtilityTool;
 import java.awt.Graphics2D;
 
 

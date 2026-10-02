@@ -1,11 +1,11 @@
-package main;
+package com.sejong.simulator.main;
 
 import javax.swing.JPanel;
 
-import entity.Entity;
-import entity.Player;
-import object.ParentObject;
-import tile.TileManager;
+import com.sejong.simulator.entity.Entity;
+import com.sejong.simulator.entity.Player;
+import com.sejong.simulator.object.ParentObject;
+import com.sejong.simulator.tile.TileManager;
 
 
 import java.awt.*;

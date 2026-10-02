@@ -1,11 +1,11 @@
-package main;
+package com.sejong.simulator.main;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import object.CheatSheet;
-import object.Coffee;
-import object.Pencil;
+import com.sejong.simulator.object.CheatSheet;
+import com.sejong.simulator.object.Coffee;
+import com.sejong.simulator.object.Pencil;
 
 
 

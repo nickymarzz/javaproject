@@ -1,14 +1,14 @@
-package entity;
+package com.sejong.simulator.entity;
 
-import main.Panel;
+import com.sejong.simulator.main.Panel;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.Rectangle;
 
 
-import main.KeyHandler;
-import main.GameDataClient;
-import main.ResourceType;
+import com.sejong.simulator.main.KeyHandler;
+import com.sejong.simulator.main.GameDataClient;
+import com.sejong.simulator.main.ResourceType;
 
 /**
  * Represents the player character in the game.

@@ -1,5 +1,5 @@
-package object;
-import main.Panel;
+package com.sejong.simulator.object;
+import com.sejong.simulator.main.Panel;
 
 
 public class CheatSheet extends ParentObject {

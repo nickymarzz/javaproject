@@ -1,14 +1,14 @@
-## Summary
+# Summary
 
 Describe the purpose of this pull request and the main changes included.
 
 ## Changes Made
 
-- 
+-
 
 ## How To Test
 
-- 
+-
 
 ## Related Issues
 

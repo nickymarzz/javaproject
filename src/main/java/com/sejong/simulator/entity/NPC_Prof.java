@@ -1,6 +1,6 @@
-package entity;
+package com.sejong.simulator.entity;
 
-import main.Panel;
+import com.sejong.simulator.main.Panel;
 import java.util.Random;
 
 

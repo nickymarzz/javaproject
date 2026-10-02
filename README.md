@@ -33,21 +33,18 @@ This project demonstrates:
 - Java Swing / AWT
 - JDBC
 - MySQL
-- Eclipse project configuration
+- Maven for build and dependency management
 
 ## Project Structure
 
 ```text
 javaproject/
 |-- src/
-|   |-- main/          # Game loop, UI, input, DB integration, entry point
-|   |-- entity/        # Player and NPC entities
-|   |-- object/        # Collectible objects
-|   |-- tile/          # Tile and map rendering
-|   `-- module-info.java
-|-- res/               # Images, maps, and database config resources
-|-- lib/               # External libraries, including MySQL JDBC driver
-|-- bin/               # Compiled classes and copied runtime resources
+|   `-- main/
+|       |-- java/com/sejong/simulator/  # Game source code
+|       `-- resources/                  # Images, maps, and database config resources
+|-- lib/               # Fallback external libraries for manual builds
+|-- pom.xml            # Maven build configuration
 |-- DB.txt             # Database schema/setup script
 `-- run.bat            # Convenience script to compile and run
 ```
@@ -79,7 +76,7 @@ The script creates the `game_resources` database and related tables used by the 
 
 ### 3. Configure Database Access
 
-Update `res/config/db.properties` with your local MySQL credentials:
+Update `src/main/resources/config/db.properties` with your local MySQL credentials:
 
 ```properties
 db.url=jdbc:mysql://localhost:3306/game_resources?useSSL=false&serverTimezone=UTC
@@ -91,23 +88,18 @@ Replace `your_password_here` with the actual password for your MySQL user.
 
 ## Build And Run
 
-### Compile
+### Using Maven (Recommended)
 
 From the project root, run:
 
 ```bash
-javac -sourcepath src -d bin src/main/*.java src/entity/*.java src/object/*.java src/tile/*.java src/module-info.java
+mvn clean package
+java -jar target/sejong-student-simulator-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
 
-### Run
+### Using Windows Shortcut (No Maven Required)
 
-```bash
-java -cp "bin;res;lib/*" main.Main
-```
-
-### Windows Shortcut
-
-You can also use:
+Simply double-click or run:
 
 ```bat
 run.bat
@@ -151,12 +143,12 @@ If the database is not configured correctly, the game may still launch, but data
 
 ## Development Notes
 
-- Main entry point: `src/main/Main.java`
-- Keyboard handling: `src/main/KeyHandler.java`
-- Game state and loop: `src/main/Panel.java`
-- UI rendering: `src/main/UI.java`
-- Database connection management: `src/main/DatabaseManager.java`
-- Database operations: `src/main/GameDataClient.java`
+- Main entry point: `src/main/java/com/sejong/simulator/main/Main.java`
+- Keyboard handling: `src/main/java/com/sejong/simulator/main/KeyHandler.java`
+- Game state and loop: `src/main/java/com/sejong/simulator/main/Panel.java`
+- UI rendering: `src/main/java/com/sejong/simulator/main/UI.java`
+- Database connection management: `src/main/java/com/sejong/simulator/main/DatabaseManager.java`
+- Database operations: `src/main/java/com/sejong/simulator/main/GameDataClient.java`
 
 ## Contributing
 

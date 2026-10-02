@@ -1,4 +1,4 @@
-package main;
+package com.sejong.simulator.main;
 
 import javax.swing.JFrame;
 

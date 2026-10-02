@@ -1,9 +1,9 @@
-package main;
+package com.sejong.simulator.main;
 
-import object.CheatSheet;
-import object.Coffee;
-import object.Pencil;
-import entity.NPC_Prof;
+import com.sejong.simulator.object.CheatSheet;
+import com.sejong.simulator.object.Coffee;
+import com.sejong.simulator.object.Pencil;
+import com.sejong.simulator.entity.NPC_Prof;
 
 public class AssetSetter {
 
