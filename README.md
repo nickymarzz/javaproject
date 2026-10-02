@@ -76,15 +76,22 @@ The script creates the `game_resources` database and related tables used by the 
 
 ### 3. Configure Database Access
 
-Update `src/main/resources/config/db.properties` with your local MySQL credentials:
+Copy the template configuration file and rename it to `db.properties`:
+
+```bash
+cp src/main/resources/config/db.properties.example src/main/resources/config/db.properties
+```
+
+Then, open `src/main/resources/config/db.properties` and update it with your local MySQL credentials:
 
 ```properties
-db.url=jdbc:mysql://localhost:3306/game_resources?useSSL=false&serverTimezone=UTC
+db.url=jdbc:mysql://localhost:3306/game_resources?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
 db.user=root
 db.password=your_password_here
 ```
 
 Replace `your_password_here` with the actual password for your MySQL user.
+*(Note: The `db.properties` file is intentionally ignored by Git to prevent accidentally pushing your password.)*
 
 ## Build And Run
 

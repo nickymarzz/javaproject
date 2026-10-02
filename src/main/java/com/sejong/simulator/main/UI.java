@@ -31,7 +31,7 @@ public class UI {
 
 
     //not sure what happened but i added this to fix the error
-    public int gameId;//could not be resolved --> declared variable
+    public int gameId = -1;//could not be resolved --> declared variable
 
 
     public UI(Panel gp) {
